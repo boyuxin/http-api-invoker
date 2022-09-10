@@ -12,6 +12,7 @@ import com.github.dadiyang.httpinvoker.util.ParamUtils;
 import com.github.dadiyang.httpinvoker.util.StringUtils;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import wiremock.com.google.common.collect.Lists;
 
 import java.io.*;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -34,7 +36,7 @@ import static com.github.dadiyang.httpinvoker.util.IoUtils.closeStream;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.Assert.*;
-
+@Slf4j
 @RunWith(Parameterized.class)
 public class CityServiceTest {
     private static final int PORT = 18888;
@@ -73,6 +75,23 @@ public class CityServiceTest {
         authKey = UUID.randomUUID().toString();
     }
 
+    public static void main(String[] args) {
+        Double twPrice = 0.0;
+        BigDecimal bai = new BigDecimal(100);
+        BigDecimal bigDecimal = BigDecimal.valueOf(twPrice);
+        BigDecimal multiply = bigDecimal.multiply(bai);
+        long l = multiply.longValue();
+        long l1 = twPrice.longValue() * 100;
+        System.out.println();
+    }
+
+    @Test
+    public void testOne(){
+        Result<Boolean> test = test("243507");
+        log.info("调用返回=={}",test);
+        System.out.println(test);
+    }
+
 
     public Result<Boolean> test(String docId) {
         if (StringUtils.isBlank(docId)) {
@@ -82,19 +101,19 @@ public class CityServiceTest {
         HashSet<String> strings = new HashSet<String>();
         strings.add(docId);
         mergeConsultSettingsReqDTO.setDoctorIds(strings);
+        System.out.println("导数据-请求医生ID"+docId);
         Result<Boolean> result = cityService.getAllCities11(mergeConsultSettingsReqDTO);
-
-        System.out.println(result);
+//        String result = cityService.getAllCities11(mergeConsultSettingsReqDTO);
+        System.out.println("导数据-请求医生ID"+docId+"==请求返回结果"+result);
         return result;
     }
 
-
     @Test
-    public void simplecsvRead() {
+    public void closeConsultData() {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
-        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
-//        String fileName = "C:\\Users\\Lance\\Desktop\\7W.csv";
+//        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
+        String fileName = "C:\\Users\\19695\\Desktop\\0910.xlsx";
 //        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
@@ -102,7 +121,48 @@ public class CityServiceTest {
         EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
             for (DemoData demoData : dataList) {
                 try {
-                    docIds.add(demoData.getDocId());
+                    docIds.add(demoData.getDiagnoseId());
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+
+        int i = 1;
+        for (String d: docIds) {
+            CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
+            closeConsultOrder.setDiagnoseId(d);
+            System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
+            Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
+            System.out.println("关单返回"+JSON.toJSONString(result));
+            System.out.println("================================"+i++);
+//            try {
+//                Thread.sleep(50);
+//            } catch (InterruptedException e) {
+//                System.out.println("异常");
+//            }
+        }
+        try {
+            Thread.sleep(9999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+        @Test
+    public void simplecsvRead() {
+        // 写法1：JDK8+ ,不用额外写一个DemoDataListener
+        // since: 3.0.0-beta1
+//        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
+        String fileName = "C:\\Users\\19695\\Desktop\\815\\7W.csv";
+//        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
+        // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
+        ArrayList<String> docIds = new ArrayList<String>();
+        EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
+            for (DemoData demoData : dataList) {
+                try {
+//                    docIds.add(demoData.getDocId());
                 } catch (Exception e) {
                     System.out.println("数据解析异常");
                 }
@@ -115,39 +175,14 @@ public class CityServiceTest {
         for (List<String> list :lists) {
             ArrayList<DemoData> dataaaaa = new ArrayList<DemoData>();
             //TODO 串行
-//            for (String docId:list) {
-//                DemoData demoData = new DemoData();
-//                try {
-//                    if (StringUtils.isBlank(docId)) {
-//                        continue;
-//                    }
-//                    Result<Boolean> test = test(docId);
-//                    demoData.setDocId(docId);
-//                    demoData.setCallId(test.getCallId());
-//                    demoData.setSuccess(test.isSuccess()?"成功":"失败");
-//                    demoData.setResult(test.getResult()?"成功":"失败");
-//                    demoData.setErrorCode(test.getErrorCode());
-//                    demoData.setErrorMsg(test.getErrorMsg());
-//                    dataaaaa.add(demoData);
-//                } catch (Exception e) {
-//                    System.err.println("======================================================");
-//                    System.err.println("======================================================");
-//                    System.err.println("======================================================");
-//                    System.err.println("代码异常 执行错误"+e);
-//                    System.err.println("======================================================");
-//                    System.err.println("======================================================");
-//                    System.err.println("======================================================");
-//                    e.printStackTrace();
-//                    demoData.setDocId(docId);
-//                    demoData.setException(e.toString());
-//                }
-//            }
-            //TODO 并行
-            list.parallelStream().forEach(x->{
+            for (String docId:list) {
                 DemoData demoData = new DemoData();
                 try {
-                    Result<Boolean> test = test(x);
-                    demoData.setDocId(x);
+                    if (StringUtils.isBlank(docId)) {
+                        continue;
+                    }
+                    Result<Boolean> test = test(docId);
+//                    demoData.setDocId(docId);
                     demoData.setCallId(test.getCallId());
                     demoData.setSuccess(test.isSuccess()?"成功":"失败");
                     demoData.setResult(test.getResult()?"成功":"失败");
@@ -163,15 +198,41 @@ public class CityServiceTest {
                     System.err.println("======================================================");
                     System.err.println("======================================================");
                     e.printStackTrace();
-                    demoData.setDocId(x);
+//                    demoData.setDocId(docId);
                     demoData.setException(e.toString());
                     dataaaaa.add(demoData);
                 }
-            });
+            }
+            //TODO 并行
+//            list.parallelStream().forEach(x->{
+//                DemoData demoData = new DemoData();
+//                try {
+//                    Result<Boolean> test = test(x);
+//                    demoData.setDocId(x);
+//                    demoData.setCallId(test.getCallId());
+//                    demoData.setSuccess(test.isSuccess()?"成功":"失败");
+//                    demoData.setResult(test.getResult()?"成功":"失败");
+//                    demoData.setErrorCode(test.getErrorCode());
+//                    demoData.setErrorMsg(test.getErrorMsg());
+//                    dataaaaa.add(demoData);
+//                } catch (Exception e) {
+//                    System.err.println("======================================================");
+//                    System.err.println("======================================================");
+//                    System.err.println("======================================================");
+//                    System.err.println("代码异常 执行错误"+e);
+//                    System.err.println("======================================================");
+//                    System.err.println("======================================================");
+//                    System.err.println("======================================================");
+//                    e.printStackTrace();
+//                    demoData.setDocId(x);
+//                    demoData.setException(e.toString());
+//                    dataaaaa.add(demoData);
+//                }
+//            });
             // 写法1 JDK8+
             String s = UUID.randomUUID().toString();
             // since: 3.0.0-beta1
-            String fileNameOut = "C:\\Users\\Lance\\Desktop\\result\\数据导入结果"+n+"=="+s+".xlsx";
+            String fileNameOut = "C:\\Users\\19695\\Desktop\\815\\result\\数据导入结果"+n+"=="+s+".xlsx";
             // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
             // 如果这里想使用03 则 传入excelType参数即可
             EasyExcel.write(fileNameOut, DemoData.class).sheet("返回结果").doWrite(dataaaaa);

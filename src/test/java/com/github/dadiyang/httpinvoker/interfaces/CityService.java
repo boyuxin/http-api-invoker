@@ -32,9 +32,17 @@ public interface CityService {
     @RetryPolicy(times = 2, fixedBackOffPeriod = 3000)
     List<City> getAllCities();
 
-    @HttpReq(value = "https://mapi.test.fosun-creative.com/api/consult-product/consultSettings/usedConsultSettingsSync" , method = ReqMethod.POST)
+//    @HttpReq(value = "https://mapi.test.fosun-creative.com/api/consult-product/consultSettings/usedConsultSettingsSync" , method = ReqMethod.POST)
+//    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/mergeConsultSettings" , method = ReqMethod.POST)
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-product/consultSettings/usedConsultSettingsSync" , method = ReqMethod.POST)
     Result<Boolean> getAllCities11(MergeConsultSettingsReqDTO mergeConsultSettingsReqDTO);
 
+//    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-product/consultSettings/usedConsultSettingsSync" , method = ReqMethod.POST)
+//    String getAllCities11(MergeConsultSettingsReqDTO mergeConsultSettingsReqDTO);
+
+
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-product/common-consult/doctor/commitConsultSummary" , method = ReqMethod.POST)
+    Result<Boolean> closeConsultOrder(CloseConsultOrder mergeConsultSettingsReqDTO);
     /**
      * 使用Param注解指定方法参数对应的请求参数名称
      */
