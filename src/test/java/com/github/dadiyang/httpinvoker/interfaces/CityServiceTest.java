@@ -29,6 +29,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCities;
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCity;
@@ -113,7 +114,7 @@ public class CityServiceTest {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
 //        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
-        String fileName = "C:\\Users\\19695\\Desktop\\0910.xlsx";
+        String fileName = "C:\\Users\\Lance\\Desktop\\1234.xlsx";
 //        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
@@ -128,25 +129,42 @@ public class CityServiceTest {
             }
         })).sheet().doRead();
 
-        int i = 1;
-        for (String d: docIds) {
+        AtomicInteger i = new AtomicInteger(1);
+        docIds.parallelStream().forEach(d -> {
             CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
             closeConsultOrder.setDiagnoseId(d);
             System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
             Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
             System.out.println("关单返回"+JSON.toJSONString(result));
-            System.out.println("================================"+i++);
-//            try {
-//                Thread.sleep(50);
-//            } catch (InterruptedException e) {
-//                System.out.println("异常");
-//            }
-        }
+            System.out.println("================================"+ i.getAndIncrement());
+        });
+//        for (String d: docIds) {
+//            CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
+//            closeConsultOrder.setDiagnoseId(d);
+//            System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
+//            Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
+//            System.out.println("关单返回"+JSON.toJSONString(result));
+//            System.out.println("================================"+ i.getAndIncrement());
+////            try {
+////                Thread.sleep(50);
+////            } catch (InterruptedException e) {
+////                System.out.println("异常");
+////            }
+//        }
         try {
             Thread.sleep(9999999);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void close(){
+        CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
+        closeConsultOrder.setDiagnoseId("202211081652071575");
+        System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
+        Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
+        System.out.println("关单返回"+JSON.toJSONString(result));
     }
 
         @Test

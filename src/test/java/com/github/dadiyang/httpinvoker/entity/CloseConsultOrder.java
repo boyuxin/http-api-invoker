@@ -19,8 +19,8 @@ public class CloseConsultOrder implements Serializable {
      * 医生id
      */
     private String diagnoseId;
-    private String roundup = "暂无";
-    private String summary= "暂无";
+    private String roundup = "暂无特别，可详见咨询记录";
+    private String summary= "无特别建议";
     private List<Dats> sumIds;
 
     public CloseConsultOrder() {
