@@ -167,7 +167,76 @@ public class CityServiceTest {
         System.out.println("关单返回"+JSON.toJSONString(result));
     }
 
-        @Test
+
+    @Test
+    public void 修改医生价格(){
+
+        String fileName = "C:\\Users\\Lance\\Desktop\\医生价格变更模板.xlsx";
+        ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
+
+        EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {
+            for (SubmitConsultSettingsExcelData demoData : dataList) {
+                try {
+                    SubmitConsultSettingsRespDTO result = updateSubmitConsultSettings(demoData);
+                    submitConsultSettingsRespDTOS.add(result);
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+
+        System.out.println(submitConsultSettingsRespDTOS);
+        // 写法1
+        String fileNameresp = "C:\\Users\\Lance\\Desktop\\医生价格变更模板返回" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(fileNameresp, SubmitConsultSettingsRespDTO.class).sheet("模板").doWrite(submitConsultSettingsRespDTOS);
+        try {
+            Thread.sleep(99999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private SubmitConsultSettingsRespDTO updateSubmitConsultSettings(SubmitConsultSettingsExcelData demoData) {
+        SubmitConsultSettingsRespDTO submitConsultSettingsRespDTO = new SubmitConsultSettingsRespDTO();
+        try {
+            SubmitConsultSettingsReqDTO reqDTO = convertConsultSettings(demoData);
+            log.info("修改医生咨询价格请求参数:{}",reqDTO);
+            Result<Boolean> result = cityService.submitConsultSettings(reqDTO);
+            log.info("修改医生咨询价格返回结果:{}",result);
+            if (result.isSuccess()) {
+                submitConsultSettingsRespDTO.setRemark("成功");
+            }else {
+                submitConsultSettingsRespDTO.setRemark("失败");
+            }
+            submitConsultSettingsRespDTO.setDoctorId(reqDTO.getDoctorId());
+            submitConsultSettingsRespDTO.setMasterCode(reqDTO.getMasterCode());
+            submitConsultSettingsRespDTO.setConsultMode(reqDTO.getConsultMode());
+            submitConsultSettingsRespDTO.setSettingsSwitch(reqDTO.getSettingsSwitch());
+            submitConsultSettingsRespDTO.setServicePrice(reqDTO.getServicePrice());
+            submitConsultSettingsRespDTO.setChargebackTime(reqDTO.getChargebackTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            submitConsultSettingsRespDTO.setRemark("失败");
+        }
+        return submitConsultSettingsRespDTO;
+    }
+
+    private SubmitConsultSettingsReqDTO convertConsultSettings(SubmitConsultSettingsExcelData demoData) {
+        SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO = new SubmitConsultSettingsReqDTO();
+        submitConsultSettingsReqDTO.setDoctorId(demoData.getDoctorId());
+        submitConsultSettingsReqDTO.setMasterCode("FOSUN_HEALTH");
+        submitConsultSettingsReqDTO.setConsultMode(demoData.getConsultMode());
+        submitConsultSettingsReqDTO.setSettingsSwitch(demoData.getSettingsSwitch());
+        submitConsultSettingsReqDTO.setServicePrice(Long.valueOf(demoData.getServicePrice()));
+        submitConsultSettingsReqDTO.setChargebackTime("48");
+        submitConsultSettingsReqDTO.setReqSystem("BYX-SYS");
+        submitConsultSettingsReqDTO.setTraceId(UUID.randomUUID().toString());
+        return submitConsultSettingsReqDTO;
+    }
+
+    @Test
     public void simplecsvRead() {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1

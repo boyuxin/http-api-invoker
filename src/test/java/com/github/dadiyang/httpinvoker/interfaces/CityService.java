@@ -43,6 +43,10 @@ public interface CityService {
 
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-product/common-consult/doctor/commitConsultSummary" , method = ReqMethod.POST)
     Result<Boolean> closeConsultOrder(CloseConsultOrder mergeConsultSettingsReqDTO);
+
+
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
+    Result<Boolean> submitConsultSettings(SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO);
     /**
      * 使用Param注解指定方法参数对应的请求参数名称
      */
