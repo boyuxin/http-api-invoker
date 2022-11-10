@@ -48,19 +48,25 @@ public class SubmitConsultSettingsExcelData extends BaseReqDTO {
     }
 
     public String getSettingsSwitch() {
-        if ("开通".equals(this.settingsSwitch)) {
+        if (this.settingsSwitch == null) {
+            return null;
+        }
+        if ("开通".equals(this.settingsSwitch.trim())) {
             return "ON";
-        } else if ("关闭".equals(this.settingsSwitch)) {
+        } else if ("关闭".equals(this.settingsSwitch.trim())) {
             return "OFF";
-        }else {
+        } else {
             return null;
         }
     }
 
     public String getConsultMode() {
-        if ("图文".equals(this.consultMode)) {
+        if (this.consultMode == null) {
+            return null;
+        }
+        if ("图文".equals(this.consultMode.trim())) {
             return "IMAGE_TEXT";
-        } else if ("视频".equals(this.consultMode)) {
+        } else if ("视频".equals(this.consultMode.trim())) {
             return "VIDEO";
         }else {
             return null;

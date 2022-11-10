@@ -216,6 +216,7 @@ public class CityServiceTest {
             submitConsultSettingsRespDTO.setSettingsSwitch(reqDTO.getSettingsSwitch());
             submitConsultSettingsRespDTO.setServicePrice(reqDTO.getServicePrice());
             submitConsultSettingsRespDTO.setChargebackTime(reqDTO.getChargebackTime());
+            submitConsultSettingsRespDTO.setConsultSettingsNo(result.getCallId());
         } catch (Exception e) {
             e.printStackTrace();
             submitConsultSettingsRespDTO.setRemark("失败");
