@@ -44,8 +44,27 @@ public interface CityService {
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-product/common-consult/doctor/commitConsultSummary" , method = ReqMethod.POST)
     Result<Boolean> closeConsultOrder(CloseConsultOrder mergeConsultSettingsReqDTO);
 
+    /**
+     *功能描述 : 删除医生信息
+     * @author boyuxin
+     * @date 2022/11/28 11:28
+     * @return com.github.dadiyang.httpinvoker.entity.Result<java.lang.Boolean>
+     */
+    @HttpReq(value = "https://mapi.dev.fosun-creative.com/api/consult-core/consultSettings/delDocSetting" , method = ReqMethod.POST)
+    Result<Boolean> delDocSetting(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO);
 
-    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
+
+    /**
+     * 查询医生咨询设置列表
+     *
+     * @param queryMultiConsultSettingsReqDTO
+     * @return
+     */
+    @HttpReq(value = "https://mapi.dev.fosun-creative.com/api/consult-core/consultSettings/queryConsultSettingsList" , method = ReqMethod.POST)
+    Result<List<QueryConsultSettingsResDTO>> queryConsultSettingsList(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO);
+
+
+    @HttpReq(value = "https://mapi.dev.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
     Result<Boolean> submitConsultSettings(SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO);
     /**
      * 使用Param注解指定方法参数对应的请求参数名称

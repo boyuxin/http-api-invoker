@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.dadiyang.httpinvoker.HttpApiProxyFactory;
 import com.github.dadiyang.httpinvoker.entity.*;
+import com.github.dadiyang.httpinvoker.entity.convert.ConsultSettingsConvert;
 import com.github.dadiyang.httpinvoker.requestor.*;
 import com.github.dadiyang.httpinvoker.util.CityUtil;
 import com.github.dadiyang.httpinvoker.util.ParamUtils;
@@ -31,6 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.github.dadiyang.httpinvoker.entity.convert.ConsultSettingsConvert.boListConvert2ConsultTimeConfigResDTOList;
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCities;
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCity;
 import static com.github.dadiyang.httpinvoker.util.IoUtils.closeStream;
@@ -76,6 +78,67 @@ public class CityServiceTest {
         authKey = UUID.randomUUID().toString();
     }
 
+    /**
+     *功能描述 : 清洗医生数据
+     * @author boyuxin
+     * @date 2022/11/28 11:30
+     * @return void
+     */
+    @Test
+    public void clearDoctor(){
+
+//        Set<String> docIds = getDocIds();
+        Set<String> docIds = new HashSet<>();
+        docIds.add("300538");
+        //查询医生数据
+        for (String docId:docIds) {
+            QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO = new QueryMultiConsultSettingsReqDTO();
+            queryMultiConsultSettingsReqDTO.setDoctorId(docId);
+            queryMultiConsultSettingsReqDTO.setReqSystem("API-清洗医生数据");
+            String traceId = UUID.randomUUID().toString();
+            queryMultiConsultSettingsReqDTO.setTraceId(traceId);
+            Result<List<QueryConsultSettingsResDTO>> listResult = cityService.queryConsultSettingsList(queryMultiConsultSettingsReqDTO);
+            if (listResult== null || !listResult.isSuccess() ||  listResult.getResult() == null) {
+                log.error("查询失败:{}----{}",queryMultiConsultSettingsReqDTO,listResult);
+                continue;
+            }
+            //医生不可用
+            Result<Boolean> delDocSetting = cityService.delDocSetting(queryMultiConsultSettingsReqDTO);
+            log.info("删除医生信息返回:{}",delDocSetting);
+            List<QueryConsultSettingsResDTO> result = listResult.getResult();
+            for (QueryConsultSettingsResDTO resDTO : result) {
+                String consultMode = resDTO.getConsultMode();
+                if ("TELEPHONE".equals(consultMode)) {
+                    log.info("电话问诊");
+                    continue;
+                }
+                //修改医生数据
+                SubmitConsultSettingsReqDTO reqDTO = ConsultSettingsConvert.getSubmitConsultSettingsReqDTO(traceId, resDTO);
+                log.info("修改医生信息接口:{}",reqDTO);
+                Result<Boolean> submitConsultSettings = cityService.submitConsultSettings(reqDTO);
+                log.info("修改医生信息接口返回:{}",submitConsultSettings);
+            }
+        }
+    }
+
+
+
+    private Set<String> getDocIds() {
+        String fileName = "C:\\Users\\19695\\Desktop\\815\\7W.csv";
+        Set<String> docIds = new HashSet<String>();
+        EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
+            for (CleanDoctorDemoData demoData : dataList) {
+                try {
+                    docIds.add(demoData.getDocId());
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+        return docIds;
+    }
+
+
     public static void main(String[] args) {
         Double twPrice = 0.0;
         BigDecimal bai = new BigDecimal(100);
@@ -114,7 +177,7 @@ public class CityServiceTest {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
 //        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
-        String fileName = "C:\\Users\\Lance\\Desktop\\1234.xlsx";
+        String fileName = "C:\\Users\\Lance\\Desktop\\tetette.xlsx";
 //        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
@@ -161,7 +224,7 @@ public class CityServiceTest {
     @Test
     public void close(){
         CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-        closeConsultOrder.setDiagnoseId("202211081652071575");
+        closeConsultOrder.setDiagnoseId("202211240128080873");
         System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
         Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
         System.out.println("关单返回"+JSON.toJSONString(result));
@@ -171,7 +234,7 @@ public class CityServiceTest {
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Desktop\\医生价格变更模板.xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (5).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {
@@ -187,7 +250,7 @@ public class CityServiceTest {
 
         System.out.println(submitConsultSettingsRespDTOS);
         // 写法1
-        String fileNameresp = "C:\\Users\\Lance\\Desktop\\医生价格变更模板返回" + System.currentTimeMillis() + ".xlsx";
+        String fileNameresp = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (2)" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileNameresp, SubmitConsultSettingsRespDTO.class).sheet("模板").doWrite(submitConsultSettingsRespDTOS);
         try {

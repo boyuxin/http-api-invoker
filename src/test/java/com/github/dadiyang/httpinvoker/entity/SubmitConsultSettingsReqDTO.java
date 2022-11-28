@@ -48,6 +48,19 @@ public class SubmitConsultSettingsReqDTO extends BaseReqDTO {
     /**
      * 退单超时时长(单位：小时)
      */
-    private String chargebackTime;
+    private String chargebackTime = "48";
+
+    /**
+     * 接单时间段
+     */
+    private List<ConsultTimeConfigReqDTO> consultTimeConfigReqDTOList;
+
+
+    /**
+     * 清洗标识
+     */
+    private String cleanFlag;
+
+    List<AssetsPackagePropertiesReqDTO> assetsPackagePropertiesClean;
 
 }
