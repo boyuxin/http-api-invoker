@@ -13,6 +13,8 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 public class CleanDoctorDemoData {
+
     private String callId;
+
     private String docId;
 }

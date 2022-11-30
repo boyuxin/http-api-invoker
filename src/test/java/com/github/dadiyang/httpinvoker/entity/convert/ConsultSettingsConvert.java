@@ -37,12 +37,12 @@ public class ConsultSettingsConvert {
         //图文问诊
         AssetsPackagePropertiesReqDTO assetsPackagePropertiesReqDTO = new AssetsPackagePropertiesReqDTO();
         assetsPackagePropertiesReqDTO.setAssetsPackageType("IMAGE_TEXT");
-        assetsPackagePropertiesReqDTO.setAssetsPackageCode("A0020015");
+        assetsPackagePropertiesReqDTO.setAssetsPackageCode("620221005515");
         assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO);
         //视频问诊
         AssetsPackagePropertiesReqDTO assetsPackagePropertiesReqDTO2 = new AssetsPackagePropertiesReqDTO();
         assetsPackagePropertiesReqDTO2.setAssetsPackageType("VIDEO");
-        assetsPackagePropertiesReqDTO2.setAssetsPackageCode("A0040014");
+        assetsPackagePropertiesReqDTO2.setAssetsPackageCode("620221005514");
         assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO2);
 
         reqDTO.setAssetsPackagePropertiesClean(assetsPackagePropertiesReqDTOS);

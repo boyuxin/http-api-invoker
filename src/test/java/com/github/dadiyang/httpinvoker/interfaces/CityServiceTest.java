@@ -87,11 +87,14 @@ public class CityServiceTest {
     @Test
     public void clearDoctor(){
 
-//        Set<String> docIds = getDocIds();
-        Set<String> docIds = new HashSet<>();
-        docIds.add("300538");
+        Set<String> docIds = getDocIds();
+//        Set<String> docIds = new HashSet<>();
+//        docIds.add("243507");
         //查询医生数据
+        int i = 0;
         for (String docId:docIds) {
+            i++;
+            System.err.println("================="+i+"================");
             QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO = new QueryMultiConsultSettingsReqDTO();
             queryMultiConsultSettingsReqDTO.setDoctorId(docId);
             queryMultiConsultSettingsReqDTO.setReqSystem("API-清洗医生数据");
@@ -114,17 +117,23 @@ public class CityServiceTest {
                 }
                 //修改医生数据
                 SubmitConsultSettingsReqDTO reqDTO = ConsultSettingsConvert.getSubmitConsultSettingsReqDTO(traceId, resDTO);
-                log.info("修改医生信息接口:{}",reqDTO);
+                log.info("修改医生信息接口:{}",JSON.toJSONString(reqDTO));
                 Result<Boolean> submitConsultSettings = cityService.submitConsultSettings(reqDTO);
                 log.info("修改医生信息接口返回:{}",submitConsultSettings);
             }
         }
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("");
     }
 
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\19695\\Desktop\\815\\7W.csv";
+        String fileName = "C:\\Users\\Lance\\Desktop\\风免医生.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {

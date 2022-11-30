@@ -50,7 +50,7 @@ public interface CityService {
      * @date 2022/11/28 11:28
      * @return com.github.dadiyang.httpinvoker.entity.Result<java.lang.Boolean>
      */
-    @HttpReq(value = "https://mapi.dev.fosun-creative.com/api/consult-core/consultSettings/delDocSetting" , method = ReqMethod.POST)
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/delDocSetting" , method = ReqMethod.POST)
     Result<Boolean> delDocSetting(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO);
 
 
@@ -60,11 +60,11 @@ public interface CityService {
      * @param queryMultiConsultSettingsReqDTO
      * @return
      */
-    @HttpReq(value = "https://mapi.dev.fosun-creative.com/api/consult-core/consultSettings/queryConsultSettingsList" , method = ReqMethod.POST)
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/queryConsultSettingsList" , method = ReqMethod.POST)
     Result<List<QueryConsultSettingsResDTO>> queryConsultSettingsList(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO);
 
 
-    @HttpReq(value = "https://mapi.dev.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
     Result<Boolean> submitConsultSettings(SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO);
     /**
      * 使用Param注解指定方法参数对应的请求参数名称
