@@ -186,7 +186,7 @@ public class CityServiceTest {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
 //        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
-        String fileName = "C:\\Users\\Lance\\Desktop\\tetette.xlsx";
+        String fileName = "C:\\Users\\Lance\\Desktop\\关单.xlsx";
 //        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
@@ -233,7 +233,7 @@ public class CityServiceTest {
     @Test
     public void close(){
         CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-        closeConsultOrder.setDiagnoseId("202211240128080873");
+        closeConsultOrder.setDiagnoseId("202212030836359743");
         System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
         Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
         System.out.println("关单返回"+JSON.toJSONString(result));
@@ -243,7 +243,7 @@ public class CityServiceTest {
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (5).xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (6).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {
@@ -259,7 +259,7 @@ public class CityServiceTest {
 
         System.out.println(submitConsultSettingsRespDTOS);
         // 写法1
-        String fileNameresp = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (2)" + System.currentTimeMillis() + ".xlsx";
+        String fileNameresp = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (6)" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileNameresp, SubmitConsultSettingsRespDTO.class).sheet("模板").doWrite(submitConsultSettingsRespDTOS);
         try {
@@ -993,4 +993,50 @@ public class CityServiceTest {
         str = cityServiceWithResultBeanResponseProcessor.getString();
         assertEquals(rs, str);
     }
+
+    @Test
+    public void test1(){
+        String fileName = "C:\\Users\\Lance\\Downloads\\医生ID.xlsx";
+//        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
+        // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
+        ArrayList<String> docIds = new ArrayList<String>();
+        EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
+            for (DemoData demoData : dataList) {
+                try {
+                    docIds.add(demoData.getCallId());
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+        System.out.println(docIds);
+        String sql = "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '是否有食物/药物过敏史或慢性疾病史，肝肾功能是否正常，是否长期用药史？如果没有，回复“无”。', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '现在是否在月经期、备孕期、孕期、哺乳期等特殊时期？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '方便上传你的报告吗？以便了解你的病情。', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '这种情况什么时间开始的，持续多久了？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '有没有家族内遗传病史，有没有类似疾病病史？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '目前精神状态如何？食欲怎么样？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '孩子几岁了，身高、体重分别是多少？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '之前有没有来医院就诊过，有没有相关诊断？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '有没有吸烟、喝酒、不健康生活史？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '除了这些症状，还有其他不舒服的地方吗？', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '目前这种情况可能需要到院做进一步的检查。', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '需要什么药？可以把之前的药品照片或者药品名称发给我看一下。', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '建议清淡饮食，忌食辛辣刺激、海鲜类等食物，适量运动，提高免疫力，保持心情舒缓，如有不适随诊。', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '改善作息习惯，增强抵抗力，调整情绪，清淡饮食。', 0, 1, NULL, 'D', 0);\n" +
+                "INSERT INTO `fosun_health`.`doc_doctor_shortcut_words` ( `create_time`, `update_time`, `user_id`, `content`, `weight`, `is_show`, `om_words_id`, `user_type`, `is_deleted`) VALUES ( '2022-12-07 11:01:30', '2022-12-07 11:01:30', 'DOCID', '不客气，感谢信任。', 0, 1, NULL, 'D', 0);\n";
+
+        ArrayList<String> sqls = new ArrayList<>();
+        for (String doctorId:docIds) {
+            String docid = sql.replaceAll("DOCID", doctorId);
+            sqls.add(docid);
+        }
+
+        FileUtils.FileWriteList("C:\\Users\\Lance\\Downloads\\sql2.text",sqls);
+        System.out.println("");
+
+    }
+
+
 }
