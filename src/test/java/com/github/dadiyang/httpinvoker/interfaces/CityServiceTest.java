@@ -233,7 +233,7 @@ public class CityServiceTest {
     @Test
     public void close(){
         CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-        closeConsultOrder.setDiagnoseId("202212030836359743");
+        closeConsultOrder.setDiagnoseId("202212151407099831");
         System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
         Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
         System.out.println("关单返回"+JSON.toJSONString(result));
@@ -270,6 +270,50 @@ public class CityServiceTest {
 
     }
 
+    @Test
+    public void testregister(){
+        String fileName = "C:\\Users\\Lance\\Desktop\\用户.xlsx";
+        ArrayList<String> docIds = new ArrayList<String>();
+        EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
+            for (DemoData demoData : dataList) {
+                try {
+                    docIds.add(demoData.getDiagnoseId());
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+
+        docIds.parallelStream().forEach(user ->{
+            UserRegisterReqDTO userRegisterReqDTO = new UserRegisterReqDTO();
+            userRegisterReqDTO.setReqSystem("DEV");
+            userRegisterReqDTO.setTraceId(UUID.randomUUID().toString());
+            userRegisterReqDTO.setUserId(user);
+            userRegisterReqDTO.setName(user);
+            userRegisterReqDTO.setAvatarImgUrl(user);
+            userRegisterReqDTO.setMasterCode("00000005");
+            userRegisterReqDTO.setConsultSource("FOSUN_HEALTH");
+            userRegisterReqDTO.setAccountType("INTERNAL");
+            log.info("请求入参:{}",userRegisterReqDTO);
+            Result<UserRegisterResDTO> register = cityService.register(userRegisterReqDTO);
+            log.info("请求返回:{}",register);
+
+        } );
+//        for (String user:docIds) {
+//            UserRegisterReqDTO userRegisterReqDTO = new UserRegisterReqDTO();
+//            userRegisterReqDTO.setReqSystem("DEV");
+//            userRegisterReqDTO.setTraceId(UUID.randomUUID().toString());
+//            userRegisterReqDTO.setUserId(user);
+//            userRegisterReqDTO.setName(user);
+//            userRegisterReqDTO.setAvatarImgUrl(user);
+//            userRegisterReqDTO.setMasterCode("00000005");
+//            userRegisterReqDTO.setConsultSource("FOSUN_HEALTH");
+//            userRegisterReqDTO.setAccountType("INTERNAL");
+//            Result<UserRegisterResDTO> register = cityService.register(userRegisterReqDTO);
+//        }
+        System.out.println("");
+
+    }
     private SubmitConsultSettingsRespDTO updateSubmitConsultSettings(SubmitConsultSettingsExcelData demoData) {
         SubmitConsultSettingsRespDTO submitConsultSettingsRespDTO = new SubmitConsultSettingsRespDTO();
         try {
