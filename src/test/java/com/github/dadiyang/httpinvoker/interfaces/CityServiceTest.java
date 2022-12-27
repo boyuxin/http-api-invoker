@@ -243,7 +243,7 @@ public class CityServiceTest {
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (6).xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (11).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {
