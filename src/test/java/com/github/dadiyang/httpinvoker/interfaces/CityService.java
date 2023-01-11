@@ -63,6 +63,8 @@ public interface CityService {
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/queryConsultSettingsList" , method = ReqMethod.POST)
     Result<List<QueryConsultSettingsResDTO>> queryConsultSettingsList(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO);
 
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/bzs/push" , method = ReqMethod.POST)
+    public Result<Boolean> bzsPush(BzsReqDTO bzsReqDTO,@Headers Map<String, String> headers);
 
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
     Result<Boolean> submitConsultSettings(SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO);

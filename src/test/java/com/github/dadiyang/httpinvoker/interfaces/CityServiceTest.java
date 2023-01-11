@@ -115,6 +115,36 @@ public class CityServiceTest {
         }
         System.out.println("");
     }
+
+    @Test
+    public void 补发帮指数(){
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("202301031032243614");
+        strings.add("202301031055049298");
+        strings.add("202301031142280958");
+        strings.add("202301031719292948");
+        strings.add("202301031723472087");
+        strings.add("202301031727318518");
+        strings.add("202301031750391816");
+        strings.add("202301031824233697");
+        strings.add("202301031830187380");
+        strings.add("202301031838100270");
+        strings.add("202301031855372632");
+        strings.add("202301032137550925");
+        strings.add("202301032220434474");
+        strings.add("202301032247104303");
+        for (String diagnoseId:strings) {
+            BzsReqDTO bzsReqDTO = new BzsReqDTO();
+            bzsReqDTO.setReqSystem("补发");
+            bzsReqDTO.setDiagnoseId(diagnoseId);
+            bzsReqDTO.setTraceId(UUID.randomUUID().toString());
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpmSlFhc292VzBXSVlKWUJ3RDY5cHAxdDhTVExLdnBXVzJNR3R2Vk5HcGdnczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
+            Result<Boolean> result = cityService.bzsPush(bzsReqDTO,headers);
+            System.out.println(result);
+        }
+    }
+
     /**
      *功能描述 : 清洗医生数据
      * @author boyuxin
