@@ -69,6 +69,10 @@ public interface CityService {
 
     @HttpReq(value = "https://mapi.fosun-creative.com/api/im-core/user/register" , method = ReqMethod.POST)
     Result<UserRegisterResDTO> register(UserRegisterReqDTO userRegisterReqDTO);
+
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-pay/consultCommon/refundAndRepealWipedAssets" , method = ReqMethod.POST)
+    String refundAndRepealWipedAssets(RefundReqDTO queryMultiConsultSettingsReqDTO,@Headers Map<String, String> headers);
+
     /**
      * 使用Param注解指定方法参数对应的请求参数名称
      */

@@ -13,6 +13,8 @@ import com.github.dadiyang.httpinvoker.util.ParamUtils;
 import com.github.dadiyang.httpinvoker.util.StringUtils;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import io.woo.htmltopdf.HtmlToPdf;
+import io.woo.htmltopdf.HtmlToPdfObject;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,7 +34,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.github.dadiyang.httpinvoker.entity.convert.ConsultSettingsConvert.boListConvert2ConsultTimeConfigResDTOList;
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCities;
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCity;
 import static com.github.dadiyang.httpinvoker.util.IoUtils.closeStream;
@@ -78,6 +79,42 @@ public class CityServiceTest {
         authKey = UUID.randomUUID().toString();
     }
 
+    @Test
+    public void testtttt(){
+        HtmlToPdf htmlToPdf = HtmlToPdf.create();
+        htmlToPdf.object(HtmlToPdfObject.forUrl("https://blog.csdn.net/weixin_49189242/article/details/124627556"));
+        htmlToPdf.convert("C:\\Users\\Lance\\Desktop\\wor234234dfile.pdf");
+    }
+
+
+    @Test
+    public void 退钱(){
+        Set<String> diagnoseIds = getDocIds();
+
+        AtomicInteger i = new AtomicInteger();
+        diagnoseIds.parallelStream().forEach(diagnoseId -> {
+            i.getAndIncrement();
+            System.err.println("================="+i+"================");
+            try {
+//                refundAndRepealWipedAssets(diagnoseId);
+                CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
+                closeConsultOrder.setDiagnoseId(diagnoseId);
+                System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
+                Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
+                System.out.println("关单返回"+JSON.toJSONString(result));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("");
+    }
     /**
      *功能描述 : 清洗医生数据
      * @author boyuxin
@@ -89,7 +126,7 @@ public class CityServiceTest {
 
         Set<String> docIds = getDocIds();
 //        Set<String> docIds = new HashSet<>();
-//        docIds.add("243507");
+        docIds.add("243507");
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -133,7 +170,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\Lance\\Desktop\\风免医生.xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤未绑卡医生0109.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -239,11 +276,10 @@ public class CityServiceTest {
         System.out.println("关单返回"+JSON.toJSONString(result));
     }
 
-
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (11).xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (13).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {
@@ -314,6 +350,16 @@ public class CityServiceTest {
         System.out.println("");
 
     }
+    public void refundAndRepealWipedAssets(String diagnoseId){
+        RefundReqDTO refundReqDTO = new RefundReqDTO();
+        refundReqDTO.setDiagnoseId(diagnoseId);
+        log.info("退款请求参数:{}",refundReqDTO);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzM3MDc5MDc4OTUsInBheWxvYWQiOiJ7XCJpZFwiOjksXCJ1c2VybmFtZVwiOlwi5rWL6K-VLeWImOS8iuWHoVwiLFwibG9naW5OYW1lXCI6XCIxMzU4NTUwNDM4M1wiLFwidXNlclR5cGVcIjoxLFwiZG9jdG9ySWRcIjoxODY5ODIsXCJyb29tSWRcIjoxODY5ODIsXCJ0b2tlblwiOlwiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5LmV5SmxlSEFpT2pFMk56TTNNRGM1TURjNE9UUXNJbkJoZVd4dllXUWlPaUo3WENKcFpGd2lPakU0TmprNE1uMGlmUS5DaVVjSEYwdDJtcE5qdHZaNTBvLXdsb19nbWhZMWkzaXRvbFBqOGg4WE5vXCJ9In0.MFEODwPwugRfqyV4oC1HqWCPPQQrq6P75x3iMK1IrC8");
+        String s = cityService.refundAndRepealWipedAssets(refundReqDTO,headers);
+        log.info("退款返回结果:{}",s);
+    }
+
     private SubmitConsultSettingsRespDTO updateSubmitConsultSettings(SubmitConsultSettingsExcelData demoData) {
         SubmitConsultSettingsRespDTO submitConsultSettingsRespDTO = new SubmitConsultSettingsRespDTO();
         try {
