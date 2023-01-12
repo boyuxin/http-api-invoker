@@ -2,6 +2,7 @@ package com.github.dadiyang.httpinvoker.interfaces;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 
 /**
  * @author boyuxin
@@ -19,6 +20,10 @@ public class My111Test {
 
         float v = bigDecimalFamous.divide(bigDecimalFamous.add(bigDecimalQuick), RoundingMode.HALF_UP).floatValue();
         System.out.println(v);
+
+        HashMap<String, String> stringStringHashMap = new HashMap<>();
+        String s = stringStringHashMap.get("222");
+        System.out.println(s);
 
     }
 }

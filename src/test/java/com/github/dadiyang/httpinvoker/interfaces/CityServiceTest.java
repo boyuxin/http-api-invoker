@@ -21,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.springframework.util.CollectionUtils;
 import wiremock.com.google.common.collect.Lists;
 
 import java.io.*;
@@ -96,12 +97,12 @@ public class CityServiceTest {
             i.getAndIncrement();
             System.err.println("================="+i+"================");
             try {
-//                refundAndRepealWipedAssets(diagnoseId);
-                CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-                closeConsultOrder.setDiagnoseId(diagnoseId);
-                System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
-                Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
-                System.out.println("关单返回"+JSON.toJSONString(result));
+                refundAndRepealWipedAssets(diagnoseId);
+//                CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
+//                closeConsultOrder.setDiagnoseId(diagnoseId);
+//                System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
+//                Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
+//                System.out.println("关单返回"+JSON.toJSONString(result));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -119,9 +120,6 @@ public class CityServiceTest {
     @Test
     public void 补发帮指数(){
         ArrayList<String> strings = new ArrayList<>();
-        strings.add("202301031032243614");
-        strings.add("202301031055049298");
-        strings.add("202301031142280958");
         strings.add("202301031719292948");
         strings.add("202301031723472087");
         strings.add("202301031727318518");
@@ -133,6 +131,9 @@ public class CityServiceTest {
         strings.add("202301032137550925");
         strings.add("202301032220434474");
         strings.add("202301032247104303");
+        boolean contains = CollectionUtils.contains(strings.listIterator(), "202301032220434474");
+        System.out.println(contains);
+
         for (String diagnoseId:strings) {
             BzsReqDTO bzsReqDTO = new BzsReqDTO();
             bzsReqDTO.setReqSystem("补发");
@@ -200,7 +201,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤未绑卡医生0109.xlsx";
+        String fileName = "C:\\Users\\Lance\\Desktop\\2234234.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -309,7 +310,7 @@ public class CityServiceTest {
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (13).xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (14).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {
