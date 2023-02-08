@@ -120,19 +120,81 @@ public class CityServiceTest {
     @Test
     public void 补发帮指数(){
         ArrayList<String> strings = new ArrayList<>();
-        strings.add("202301031719292948");
-        strings.add("202301031723472087");
-        strings.add("202301031727318518");
-        strings.add("202301031750391816");
-        strings.add("202301031824233697");
-        strings.add("202301031830187380");
-        strings.add("202301031838100270");
-        strings.add("202301031855372632");
-        strings.add("202301032137550925");
-        strings.add("202301032220434474");
-        strings.add("202301032247104303");
-        boolean contains = CollectionUtils.contains(strings.listIterator(), "202301032220434474");
-        System.out.println(contains);
+        strings.add("202212231300433951");
+        strings.add("202212240757533712");
+        strings.add("202212241305082150");
+        strings.add("202212251022315291");
+        strings.add("202212251414005256");
+        strings.add("202212252246577488");
+        strings.add("202212261326309060");
+        strings.add("202212261925362893");
+        strings.add("202212262114484390");
+        strings.add("202212270804328775");
+        strings.add("202212270919012411");
+        strings.add("202212271234535684");
+        strings.add("202212271441460605");
+        strings.add("202212271546580979");
+        strings.add("202212291107508415");
+        strings.add("202212291250237204");
+        strings.add("202212291323559119");
+        strings.add("202212291329145688");
+        strings.add("202212291828543662");
+        strings.add("202212291948152980");
+        strings.add("202212302126336425");
+        strings.add("202212310921279610");
+        strings.add("202212311143031308");
+        strings.add("202212311258412087");
+        strings.add("202212311259094371");
+        strings.add("202212311343438231");
+        strings.add("202212311403183622");
+        strings.add("202212311415521851");
+        strings.add("202212311422467798");
+        strings.add("202212311423197925");
+        strings.add("202212311429123837");
+        strings.add("202212311436568757");
+        strings.add("202212311438539351");
+        strings.add("202212311536091521");
+        strings.add("202212311543002890");
+        strings.add("202212311608155509");
+        strings.add("202212311624482072");
+        strings.add("202212311651288512");
+        strings.add("202212311718064310");
+        strings.add("202212311732027317");
+        strings.add("202212311743203715");
+        strings.add("202212311744588214");
+        strings.add("202212311800578294");
+        strings.add("202212311814341002");
+        strings.add("202212311818032318");
+        strings.add("202212311823456333");
+        strings.add("202212311836060830");
+        strings.add("202212311837081090");
+        strings.add("202212311840530565");
+        strings.add("202212311859514503");
+        strings.add("202212311901135201");
+        strings.add("202212311904427444");
+        strings.add("202212311918304304");
+        strings.add("202212311936330029");
+        strings.add("202212311944483654");
+        strings.add("202212312008398984");
+        strings.add("202212312057225844");
+        strings.add("202212312100373864");
+        strings.add("202212312105355831");
+        strings.add("202212312109232587");
+        strings.add("202212312125374494");
+        strings.add("202212312141292379");
+        strings.add("202212312149125936");
+        strings.add("202212312154598675");
+        strings.add("202212312159036671");
+        strings.add("202212312223468368");
+        strings.add("202212312224528950");
+        strings.add("202212312336590935");
+        strings.add("202212312358552557");
+        strings.add("202301010029539084");
+        strings.add("202301010137257800");
+        strings.add("202301010355438946");
+        strings.add("202301010524110871");
+//        boolean contains = CollectionUtils.contains(strings.listIterator(), "202301032220434474");
+//        System.out.println(contains);
 
         for (String diagnoseId:strings) {
             BzsReqDTO bzsReqDTO = new BzsReqDTO();
@@ -147,7 +209,7 @@ public class CityServiceTest {
     }
 
     /**
-     *功能描述 : 清洗医生数据
+     *功能描述 : 清洗医生数据 70%
      * @author boyuxin
      * @date 2022/11/28 11:30
      * @return void
@@ -201,7 +263,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\Lance\\Desktop\\2234234.xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤&风免注册医生明细-截止2月2日.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -215,7 +277,45 @@ public class CityServiceTest {
         return docIds;
     }
 
+    @Test
+    public void syncDoctorPatientRelationBillSupport() {
+        String fileName = "C:\\Users\\Lance\\Desktop\\无标题2.xlsx";
+        ArrayList<ConsultDoctorPatientReqDTO> datas = new ArrayList<>();
+        EasyExcel.read(fileName, ConsultDoctorPatientReqDTO.class, new PageReadListener<ConsultDoctorPatientReqDTO>(dataList -> {
+            for (ConsultDoctorPatientReqDTO demoData : dataList) {
+                try {
+                    datas.add(demoData);
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
 
+        for (ConsultDoctorPatientReqDTO da:datas){
+            da.setBusinessType("FAMILY_DOCTOR_CONSULT");
+            da.setEntranceSource("FOSUN_HEALTH");
+            da.setSourceType(2);
+            da.setRealDoctorId(da.getDoctorId());
+            da.setPatientAge(null);
+            log.info("入参:{}",da);
+            System.out.println(JSON.toJSONString(da));
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzM3MDc5MDc4OTUsInBheWxvYWQiOiJ7XCJpZFwiOjksXCJ1c2VybmFtZVwiOlwi5rWL6K-VLeWImOS8iuWHoVwiLFwibG9naW5OYW1lXCI6XCIxMzU4NTUwNDM4M1wiLFwidXNlclR5cGVcIjoxLFwiZG9jdG9ySWRcIjoxODY5ODIsXCJyb29tSWRcIjoxODY5ODIsXCJ0b2tlblwiOlwiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5LmV5SmxlSEFpT2pFMk56TTNNRGM1TURjNE9UUXNJbkJoZVd4dllXUWlPaUo3WENKcFpGd2lPakU0TmprNE1uMGlmUS5DaVVjSEYwdDJtcE5qdHZaNTBvLXdsb19nbWhZMWkzaXRvbFBqOGg4WE5vXCJ9In0.MFEODwPwugRfqyV4oC1HqWCPPQQrq6P75x3iMK1IrC8");
+
+            Result<Boolean> result = cityService.syncDoctorPatientRelationBillSupport(da,headers);
+            log.info("出参:{}",result);
+
+
+        }
+
+
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void main(String[] args) {
         Double twPrice = 0.0;
         BigDecimal bai = new BigDecimal(100);
@@ -301,7 +401,7 @@ public class CityServiceTest {
     @Test
     public void close(){
         CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-        closeConsultOrder.setDiagnoseId("202212151407099831");
+        closeConsultOrder.setDiagnoseId("202212191444516730");
         System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
         Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
         System.out.println("关单返回"+JSON.toJSONString(result));
@@ -310,7 +410,7 @@ public class CityServiceTest {
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Downloads\\医生价格变更模板1 (14).xlsx";
+        String fileName = "C:\\Users\\Lance\\Desktop\\医生调价产品记录表(6).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {

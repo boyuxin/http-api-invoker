@@ -75,6 +75,16 @@ public interface CityService {
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-pay/consultCommon/refundAndRepealWipedAssets" , method = ReqMethod.POST)
     String refundAndRepealWipedAssets(RefundReqDTO queryMultiConsultSettingsReqDTO,@Headers Map<String, String> headers);
 
+
+    /**
+     * 查询医生咨询设置列表
+     *
+     * @param consultDoctorPatientReqDTO
+     * @return
+     */
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consult/supbill/syncDoctorPatientRelation" , method = ReqMethod.POST)
+    Result<Boolean> syncDoctorPatientRelationBillSupport(ConsultDoctorPatientReqDTO consultDoctorPatientReqDTO,@Headers Map<String, String> headers);
+
     /**
      * 使用Param注解指定方法参数对应的请求参数名称
      */
