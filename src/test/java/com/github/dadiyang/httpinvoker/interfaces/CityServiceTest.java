@@ -120,79 +120,9 @@ public class CityServiceTest {
     @Test
     public void 补发帮指数(){
         ArrayList<String> strings = new ArrayList<>();
-        strings.add("202212231300433951");
-        strings.add("202212240757533712");
-        strings.add("202212241305082150");
-        strings.add("202212251022315291");
-        strings.add("202212251414005256");
-        strings.add("202212252246577488");
-        strings.add("202212261326309060");
-        strings.add("202212261925362893");
-        strings.add("202212262114484390");
-        strings.add("202212270804328775");
-        strings.add("202212270919012411");
-        strings.add("202212271234535684");
-        strings.add("202212271441460605");
-        strings.add("202212271546580979");
-        strings.add("202212291107508415");
-        strings.add("202212291250237204");
-        strings.add("202212291323559119");
-        strings.add("202212291329145688");
-        strings.add("202212291828543662");
-        strings.add("202212291948152980");
-        strings.add("202212302126336425");
-        strings.add("202212310921279610");
-        strings.add("202212311143031308");
-        strings.add("202212311258412087");
-        strings.add("202212311259094371");
-        strings.add("202212311343438231");
-        strings.add("202212311403183622");
-        strings.add("202212311415521851");
-        strings.add("202212311422467798");
-        strings.add("202212311423197925");
-        strings.add("202212311429123837");
-        strings.add("202212311436568757");
-        strings.add("202212311438539351");
-        strings.add("202212311536091521");
-        strings.add("202212311543002890");
-        strings.add("202212311608155509");
-        strings.add("202212311624482072");
-        strings.add("202212311651288512");
-        strings.add("202212311718064310");
-        strings.add("202212311732027317");
-        strings.add("202212311743203715");
-        strings.add("202212311744588214");
-        strings.add("202212311800578294");
-        strings.add("202212311814341002");
-        strings.add("202212311818032318");
-        strings.add("202212311823456333");
-        strings.add("202212311836060830");
-        strings.add("202212311837081090");
-        strings.add("202212311840530565");
-        strings.add("202212311859514503");
-        strings.add("202212311901135201");
-        strings.add("202212311904427444");
-        strings.add("202212311918304304");
-        strings.add("202212311936330029");
-        strings.add("202212311944483654");
-        strings.add("202212312008398984");
-        strings.add("202212312057225844");
-        strings.add("202212312100373864");
-        strings.add("202212312105355831");
-        strings.add("202212312109232587");
-        strings.add("202212312125374494");
-        strings.add("202212312141292379");
-        strings.add("202212312149125936");
-        strings.add("202212312154598675");
-        strings.add("202212312159036671");
-        strings.add("202212312223468368");
-        strings.add("202212312224528950");
-        strings.add("202212312336590935");
-        strings.add("202212312358552557");
-        strings.add("202301010029539084");
-        strings.add("202301010137257800");
-        strings.add("202301010355438946");
-        strings.add("202301010524110871");
+        strings.add("202301292139013500");
+        strings.add("202301212221416709");
+        strings.add("202301201803360707");
 //        boolean contains = CollectionUtils.contains(strings.listIterator(), "202301032220434474");
 //        System.out.println(contains);
 
@@ -202,9 +132,15 @@ public class CityServiceTest {
             bzsReqDTO.setDiagnoseId(diagnoseId);
             bzsReqDTO.setTraceId(UUID.randomUUID().toString());
             HashMap<String, String> headers = new HashMap<>();
-            headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpmSlFhc292VzBXSVlKWUJ3RDY5cHAxdDhTVExLdnBXVzJNR3R2Vk5HcGdnczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
+//            headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpmSlFhc292VzBXSVlKWUJ3RDY5cHAxdDhTVExLdnBXVzJNR3R2Vk5HcGdnczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
+            headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpUd3BIc0FlY0dVS0xvUi9uVkVRcTdDTndYWnNpRlU4UnF5Z0oxZWtJZFRBczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
             Result<Boolean> result = cityService.bzsPush(bzsReqDTO,headers);
             System.out.println(result);
+        }
+        try {
+            Thread.sleep(9999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -219,7 +155,7 @@ public class CityServiceTest {
 
         Set<String> docIds = getDocIds();
 //        Set<String> docIds = new HashSet<>();
-        docIds.add("243507");
+//        docIds.add("132921");
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -241,10 +177,10 @@ public class CityServiceTest {
             List<QueryConsultSettingsResDTO> result = listResult.getResult();
             for (QueryConsultSettingsResDTO resDTO : result) {
                 String consultMode = resDTO.getConsultMode();
-                if ("TELEPHONE".equals(consultMode)) {
-                    log.info("电话问诊");
-                    continue;
-                }
+//                if ("TELEPHONE".equals(consultMode)) {
+//                    log.info("电话问诊");
+//                    continue;
+//                }
                 //修改医生数据
                 SubmitConsultSettingsReqDTO reqDTO = ConsultSettingsConvert.getSubmitConsultSettingsReqDTO(traceId, resDTO);
                 log.info("修改医生信息接口:{}",JSON.toJSONString(reqDTO));
@@ -260,10 +196,54 @@ public class CityServiceTest {
         System.out.println("");
     }
 
+    public void 洗已关单(){
+
+    }
+
+    @Test
+    public void 关闭咨询(){
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("IMAGE_TEXT");
+        strings.add("TELEPHONE");
+        strings.add("VIDEO");
+        strings.add("ELECTRONIC_PRESCRIPTION");
+
+        ArrayList<String> doctorids = new ArrayList<>();
+        doctorids.add("220186");
+        doctorids.add("234789");
+        doctorids.add("74878");
+        doctorids.add("174766");
+        doctorids.add("151061");
+        doctorids.add("2446");
+        for (String dd :doctorids) {
+            for (String sss:strings) {
+                SubmitConsultSettingsReqDTO reqDTO = new SubmitConsultSettingsReqDTO();
+                reqDTO.setDoctorId(dd);
+                reqDTO.setMasterCode("FOSUN_HEALTH");
+                reqDTO.setSettingsSwitch("OFF");
+                reqDTO.setServicePrice(0L);
+                reqDTO.setReqSystem("API");
+                reqDTO.setTraceId(UUID.randomUUID().toString());
+                reqDTO.setConsultMode(sss);
+                log.info("修改医生信息接口:{}",JSON.toJSONString(reqDTO));
+                Result<Boolean> submitConsultSettings = cityService.submitConsultSettings(reqDTO);
+                log.info("修改医生信息接口返回:{}",submitConsultSettings);
+
+            }
+        }
+
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤&风免注册医生明细-截止2月2日.xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤&风免需配置分佣医生明细--截止3月2日.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -316,6 +296,43 @@ public class CityServiceTest {
         }
 
     }
+
+
+    /**
+     *功能描述 : 同步医患关系
+     * @author boyuxin
+     * @date 2023/2/21 9:40
+     * @return void
+     */
+    @Test
+    public void syncDoctorPatientRelationBillSupportOne() {
+        ConsultDoctorPatientReqDTO da = new ConsultDoctorPatientReqDTO();
+        da.setDoctorId("61900");
+        da.setOwnerId("9972554");
+        da.setPatientName("颜万朗");
+        da.setPatientId("13450348");
+        da.setPatientTel("15007716396");
+        da.setBusinessType("FAMILY_DOCTOR_CONSULT");
+        da.setEntranceSource("FOSUN_HEALTH");
+        da.setSourceType(2);
+        da.setRealDoctorId(da.getDoctorId());
+        da.setPatientAge(null);
+        log.info("入参:{}",da);
+        System.out.println(JSON.toJSONString(da));
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzM3MDc5MDc4OTUsInBheWxvYWQiOiJ7XCJpZFwiOjksXCJ1c2VybmFtZVwiOlwi5rWL6K-VLeWImOS8iuWHoVwiLFwibG9naW5OYW1lXCI6XCIxMzU4NTUwNDM4M1wiLFwidXNlclR5cGVcIjoxLFwiZG9jdG9ySWRcIjoxODY5ODIsXCJyb29tSWRcIjoxODY5ODIsXCJ0b2tlblwiOlwiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5LmV5SmxlSEFpT2pFMk56TTNNRGM1TURjNE9UUXNJbkJoZVd4dllXUWlPaUo3WENKcFpGd2lPakU0TmprNE1uMGlmUS5DaVVjSEYwdDJtcE5qdHZaNTBvLXdsb19nbWhZMWkzaXRvbFBqOGg4WE5vXCJ9In0.MFEODwPwugRfqyV4oC1HqWCPPQQrq6P75x3iMK1IrC8");
+
+        Result<Boolean> result = cityService.syncDoctorPatientRelationBillSupport(da,headers);
+        log.info("出参:{}",result);
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     public static void main(String[] args) {
         Double twPrice = 0.0;
         BigDecimal bai = new BigDecimal(100);
@@ -410,7 +427,7 @@ public class CityServiceTest {
     @Test
     public void 修改医生价格(){
 
-        String fileName = "C:\\Users\\Lance\\Desktop\\医生调价产品记录表(6).xlsx";
+        String fileName = "C:\\Users\\Lance\\Desktop\\医生调价产品记录表(7).xlsx";
         ArrayList<SubmitConsultSettingsRespDTO> submitConsultSettingsRespDTOS = new ArrayList<>();
 
         EasyExcel.read(fileName, SubmitConsultSettingsExcelData.class, new PageReadListener<SubmitConsultSettingsExcelData>(dataList -> {

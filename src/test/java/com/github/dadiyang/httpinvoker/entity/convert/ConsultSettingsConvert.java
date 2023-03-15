@@ -45,6 +45,13 @@ public class ConsultSettingsConvert {
         assetsPackagePropertiesReqDTO2.setAssetsPackageCode("620221005514");
         assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO2);
 
+        //TODO 电话问诊
+        AssetsPackagePropertiesReqDTO assetsPackagePropertiesReqDTO3 = new AssetsPackagePropertiesReqDTO();
+        assetsPackagePropertiesReqDTO3.setAssetsPackageType("TELEPHONE");
+        assetsPackagePropertiesReqDTO3.setAssetsPackageCode("620231006593");
+        assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO3);
+
+
         reqDTO.setAssetsPackagePropertiesClean(assetsPackagePropertiesReqDTOS);
         return reqDTO;
     }
