@@ -203,23 +203,31 @@ public class CityServiceTest {
 
     @Test
     public void 验签(){
-        Map<String, String> map = Maps.newHashMapWithExpectedSize(3);
+        //系统当前时间
         String timestamp = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        map.put("timestamp",timestamp);  //值应该为毫秒数的字符串形式
-        map.put("path", "/api/consult-product/consultSettings/queryConsultSettingsList");
-        map.put("version", "1.0.0");
-        String ak = "D7D9C6393E204EFD96D6AAE8D4EC4C9A";
-        String sk = "2A626303AA64444E911E999DDF39B9FA";
+        //访问路径
+        String path = "/api/consult-product/consultSettings/queryConsultSettingsList";
+        //加密 AppKey
+        String appKey = "D7D9C6393E204EFD96D6AAE8D4EC4C9A";
+        //加密 秘钥
+        String appSecret = "2A626303AA64444E911E999DDF39B9FA";
 
+        Map<String, String> map = Maps.newHashMapWithExpectedSize(3);
+        map.put("timestamp",timestamp);  //值应该为毫秒数的字符串形式
+        map.put("path", path);
+        map.put("version", "1.0.0");
+
+        //计算签名
         List<String> storedKeys = Arrays.stream(map.keySet().toArray(new String[]{})).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        final String sign = storedKeys.stream().map(key -> String.join("", key, map.get(key))).collect(Collectors.joining()).trim().concat(sk);
-        String signUpp = DigestUtils.md5DigestAsHex(sign.getBytes()).toUpperCase();
+        final String sign = storedKeys.stream().map(key -> String.join("", key, map.get(key))).collect(Collectors.joining()).trim().concat(appSecret);
+        //签名转大写
+        String signUppercase = DigestUtils.md5DigestAsHex(sign.getBytes()).toUpperCase();
 
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("timestamp", timestamp);
-        headers.put("appKey", ak);
-        headers.put("sign", signUpp);
+        headers.put("appKey", appKey);
+        headers.put("sign", signUppercase);
         QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO = new QueryMultiConsultSettingsReqDTO();
         queryMultiConsultSettingsReqDTO.setDoctorId("45398");
         Result<List<QueryConsultSettingsResDTO>> listResult = cityService.queryConsultSettingsListProduct(queryMultiConsultSettingsReqDTO,headers);
