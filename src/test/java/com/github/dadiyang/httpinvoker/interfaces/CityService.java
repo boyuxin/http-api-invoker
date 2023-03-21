@@ -79,6 +79,16 @@ public interface CityService {
     /**
      * 查询医生咨询设置列表
      *
+     * @param queryMultiConsultSettingsReqDTO
+     * @return
+     */
+    @HttpReq(value = "https://open-api.test.fosun-creative.com/api/consult-product/consultSettings/queryConsultSettingsList" , method = ReqMethod.POST)
+    Result<List<QueryConsultSettingsResDTO>> queryConsultSettingsListProduct(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO,@Headers Map<String, String> headers);
+
+
+    /**
+     * 查询医生咨询设置列表
+     *
      * @param consultDoctorPatientReqDTO
      * @return
      */

@@ -22,18 +22,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.DigestUtils;
 import wiremock.com.google.common.collect.Lists;
+import wiremock.com.google.common.collect.Maps;
 
 import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCities;
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCity;
@@ -155,7 +160,7 @@ public class CityServiceTest {
 
         Set<String> docIds = getDocIds();
 //        Set<String> docIds = new HashSet<>();
-//        docIds.add("132921");
+        docIds.add("132921");
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -196,7 +201,29 @@ public class CityServiceTest {
         System.out.println("");
     }
 
-    public void 洗已关单(){
+    @Test
+    public void 验签(){
+        Map<String, String> map = Maps.newHashMapWithExpectedSize(3);
+        String timestamp = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        map.put("timestamp",timestamp);  //值应该为毫秒数的字符串形式
+        map.put("path", "/api/consult-product/consultSettings/queryConsultSettingsList");
+        map.put("version", "1.0.0");
+        String ak = "D7D9C6393E204EFD96D6AAE8D4EC4C9A";
+        String sk = "2A626303AA64444E911E999DDF39B9FA";
+
+        List<String> storedKeys = Arrays.stream(map.keySet().toArray(new String[]{})).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        final String sign = storedKeys.stream().map(key -> String.join("", key, map.get(key))).collect(Collectors.joining()).trim().concat(sk);
+        String signUpp = DigestUtils.md5DigestAsHex(sign.getBytes()).toUpperCase();
+
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("timestamp", timestamp);
+        headers.put("appKey", ak);
+        headers.put("sign", signUpp);
+        QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO = new QueryMultiConsultSettingsReqDTO();
+        queryMultiConsultSettingsReqDTO.setDoctorId("45398");
+        Result<List<QueryConsultSettingsResDTO>> listResult = cityService.queryConsultSettingsListProduct(queryMultiConsultSettingsReqDTO,headers);
+        System.out.println(listResult);
 
     }
 
@@ -209,12 +236,27 @@ public class CityServiceTest {
         strings.add("ELECTRONIC_PRESCRIPTION");
 
         ArrayList<String> doctorids = new ArrayList<>();
-        doctorids.add("220186");
-        doctorids.add("234789");
-        doctorids.add("74878");
-        doctorids.add("174766");
         doctorids.add("151061");
-        doctorids.add("2446");
+        doctorids.add("145291");
+        doctorids.add("87754");
+        doctorids.add("58378");
+        doctorids.add("57384");
+        doctorids.add("55383");
+        doctorids.add("59962");
+        doctorids.add("243694");
+        doctorids.add("101671");
+        doctorids.add("146621");
+        doctorids.add("115137");
+        doctorids.add("180036");
+        doctorids.add("181158");
+        doctorids.add("106906");
+        doctorids.add("98800");
+        doctorids.add("64796");
+        doctorids.add("87487");
+        doctorids.add("62457");
+        doctorids.add("14090");
+        doctorids.add("171628");
+        doctorids.add("237583");
         for (String dd :doctorids) {
             for (String sss:strings) {
                 SubmitConsultSettingsReqDTO reqDTO = new SubmitConsultSettingsReqDTO();
@@ -243,7 +285,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤&风免需配置分佣医生明细--截止3月2日.xlsx";
+        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤&风免需配置分佣医生明细--截止3月16日.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
