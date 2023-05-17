@@ -63,4 +63,14 @@ public class SubmitConsultSettingsReqDTO extends BaseReqDTO {
 
     List<AssetsPackagePropertiesReqDTO> assetsPackagePropertiesClean;
 
+    /**
+     * 自动回复话术
+     */
+    private String automaticReplyScript;
+
+    /**
+     * 服务时长
+     */
+    private String serviceDuration;
+
 }

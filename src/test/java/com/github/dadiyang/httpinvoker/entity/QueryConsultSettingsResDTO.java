@@ -94,4 +94,14 @@ public class QueryConsultSettingsResDTO implements Serializable {
      */
     private String chargebackTime;
 
+    /**
+     * 自动回复话术
+     */
+    private String automaticReplyScript;
+
+    /**
+     * 服务时长
+     */
+    private String serviceDuration;
+
 }

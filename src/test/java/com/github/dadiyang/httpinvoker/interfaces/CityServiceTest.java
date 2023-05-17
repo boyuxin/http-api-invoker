@@ -30,6 +30,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -38,6 +39,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.github.dadiyang.httpinvoker.util.CityUtil.createCities;
@@ -149,6 +151,87 @@ public class CityServiceTest {
         }
     }
 
+    @Test
+    public void 更新线上数据() throws Exception {
+        ArrayList<CleanDoctorData> docData = getDocData();
+        Map<String, List<CleanDoctorData>> excelDate = docData.stream().filter(x -> (!StringUtils.isBlank(x.getDocId()))).collect(Collectors.groupingBy(CleanDoctorData::getDocId));
+        System.out.println(excelDate);
+        ArrayList<CleanDoctorData> remarkList = new ArrayList<>();
+        excelDate.keySet().parallelStream().forEach( doctorId ->{
+            try {
+                updateDoctorInfo(excelDate, doctorId);
+            }catch (Exception e){
+                List<CleanDoctorData> cleanDoctorData = excelDate.get(doctorId);
+                if (!CollectionUtils.isEmpty(cleanDoctorData)){
+                    CleanDoctorData cleanDoctorRemark = cleanDoctorData.get(0);
+                    if (cleanDoctorRemark != null) {
+                        cleanDoctorRemark.setRemark(e.getMessage());
+                        remarkList.add(cleanDoctorRemark);
+                    }
+                }
+            }
+        }  );
+        System.out.println(remarkList);
+//        for (String doctorId:excelDate.keySet()) {
+//            try {
+//                updateDoctorInfo(excelDate, doctorId);
+//            }catch (Exception e){
+//                List<CleanDoctorData> cleanDoctorData = excelDate.get(doctorId);
+//                if (CollectionUtils.isEmpty(cleanDoctorData)){
+//                    CleanDoctorData cleanDoctorRemark = cleanDoctorData.get(0);
+//                    if (cleanDoctorRemark != null) {
+//                        cleanDoctorRemark.setRemark(e.getMessage());
+//                        remarkList.add(cleanDoctorRemark);
+//                    }
+//                }
+//            }
+//        }
+    }
+
+    private void updateDoctorInfo(Map<String, List<CleanDoctorData>> excelDate, String doctorId) throws Exception {
+        List<CleanDoctorData> cleanDoctorData = excelDate.get(doctorId);
+        QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO = new QueryMultiConsultSettingsReqDTO();
+        queryMultiConsultSettingsReqDTO.setDoctorId(doctorId);
+        queryMultiConsultSettingsReqDTO.setReqSystem("API-清洗医生数据");
+        String traceId = UUID.randomUUID().toString();
+        queryMultiConsultSettingsReqDTO.setTraceId(traceId);
+        Result<List<QueryConsultSettingsResDTO>> listResult = cityService.queryConsultSettingsList(queryMultiConsultSettingsReqDTO);
+        if (listResult== null || !listResult.isSuccess() ||  listResult.getResult() == null) {
+            log.error("查询失败:{}----{}",queryMultiConsultSettingsReqDTO,listResult);
+            throw new Exception("查询失败:" + doctorId);
+        }
+        if (true){
+            throw new Exception("查询失败:" + doctorId);
+        }
+        if (true){
+            return;
+        }
+        System.err.println("=====================");
+        System.err.println("=====================");
+        System.err.println("=====================");
+        System.err.println("=====================");
+        System.err.println("=====================");
+        System.err.println("=====================");
+        List<QueryConsultSettingsResDTO> result = listResult.getResult();
+        //医生不可用
+        Result<Boolean> delDocSetting = cityService.delDocSetting(queryMultiConsultSettingsReqDTO);
+        if (delDocSetting== null || !delDocSetting.isSuccess() ||  !delDocSetting.getResult()) {
+            log.error("删除医生信息失败:{}----{}",queryMultiConsultSettingsReqDTO,listResult);
+            throw new Exception("删除医生信息失败:"+ doctorId);
+        }
+        for (QueryConsultSettingsResDTO resDTO : result) {
+            //修改医生数据
+            SubmitConsultSettingsReqDTO reqDTO = ConsultSettingsConvert.getSubmitConsultSettingsReqDTO(traceId, resDTO,cleanDoctorData);
+            log.info("修改医生信息接口:{}",JSON.toJSONString(reqDTO));
+            Result<Boolean> submitConsultSettings = cityService.submitConsultSettings(reqDTO);
+            log.info("修改医生信息接口返回:{}",submitConsultSettings);
+            if (submitConsultSettings== null || !submitConsultSettings.isSuccess() ||  !submitConsultSettings.getResult()) {
+                log.error("修改医生信息失败:{}----{}",queryMultiConsultSettingsReqDTO,listResult);
+                throw new Exception("修改医生信息失败:"+ doctorId);
+            }
+        }
+    }
+
     /**
      *功能描述 : 清洗医生数据 70%
      * @author boyuxin
@@ -159,8 +242,10 @@ public class CityServiceTest {
     public void clearDoctor(){
 
         Set<String> docIds = getDocIds();
+
+
 //        Set<String> docIds = new HashSet<>();
-        docIds.add("132921");
+        docIds.add("186982");
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -187,7 +272,7 @@ public class CityServiceTest {
 //                    continue;
 //                }
                 //修改医生数据
-                SubmitConsultSettingsReqDTO reqDTO = ConsultSettingsConvert.getSubmitConsultSettingsReqDTO(traceId, resDTO);
+                SubmitConsultSettingsReqDTO reqDTO = ConsultSettingsConvert.getSubmitConsultSettingsReqDTO(traceId, resDTO , null);
                 log.info("修改医生信息接口:{}",JSON.toJSONString(reqDTO));
                 Result<Boolean> submitConsultSettings = cityService.submitConsultSettings(reqDTO);
                 log.info("修改医生信息接口返回:{}",submitConsultSettings);
@@ -293,7 +378,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "C:\\Users\\Lance\\Downloads\\肿瘤&风免需配置分佣医生明细--截止3月16日.xlsx";
+        String fileName = "/Users/apple/Documents/肿瘤&风免需配置分佣医生明细--数据截止4月25日.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -305,6 +390,22 @@ public class CityServiceTest {
             }
         })).sheet().doRead();
         return docIds;
+    }
+
+    private ArrayList<CleanDoctorData>  getDocData() {
+        String fileName = "/Users/apple/Desktop/0516.xlsx";
+        ArrayList<CleanDoctorData> cleanDoctorData = new ArrayList<>();
+
+        EasyExcel.read(fileName, CleanDoctorData.class, new PageReadListener<CleanDoctorData>(dataList -> {
+            for (CleanDoctorData demoData : dataList) {
+                try {
+                    cleanDoctorData.add(demoData);
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+        return cleanDoctorData;
     }
 
     @Test
