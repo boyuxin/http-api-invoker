@@ -44,6 +44,9 @@ public interface CityService {
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-product/common-consult/doctor/commitConsultSummary" , method = ReqMethod.POST)
     Result<Boolean> closeConsultOrder(CloseConsultOrder mergeConsultSettingsReqDTO);
 
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consult/modifyConsultOrder" , method = ReqMethod.POST)
+    String modifyConsultOrder(ModifyConsultOrderReqDTO modifyConsultOrderReqDTO,@Headers Map<String, String> headers);
+
     /**
      *功能描述 : 删除医生信息
      * @author boyuxin
@@ -62,6 +65,10 @@ public interface CityService {
      */
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/queryConsultSettingsList" , method = ReqMethod.POST)
     Result<List<QueryConsultSettingsResDTO>> queryConsultSettingsList(QueryMultiConsultSettingsReqDTO queryMultiConsultSettingsReqDTO);
+
+    @HttpReq(value = "https://mapi.fosun-creative.com/be-doctor-cooperation/hospitalDownDoctor/save" , method = ReqMethod.POST)
+    String save(HospitalDoctorDownInfoInputDTO reqDTO,@Headers Map<String, String> headers);
+
 
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/bzs/push" , method = ReqMethod.POST)
     public Result<Boolean> bzsPush(BzsReqDTO bzsReqDTO,@Headers Map<String, String> headers);

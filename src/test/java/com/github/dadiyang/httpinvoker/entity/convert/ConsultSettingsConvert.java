@@ -36,6 +36,7 @@ public class ConsultSettingsConvert {
         reqDTO.setChargebackTime(StringUtils.isEmpty(resDTO.getChargebackTime()) ? "48" : resDTO.getChargebackTime());
         reqDTO.setAutomaticReplyScript(resDTO.getAutomaticReplyScript());
         reqDTO.setServiceDuration(resDTO.getServiceDuration());
+        reqDTO.setSupplierId(1296267);
 
         if ( cleanDoctorData == null || CollectionUtils.isEmpty(cleanDoctorData)){
             ArrayList<AssetsPackagePropertiesReqDTO> assetsPackagePropertiesReqDTOS = new ArrayList<>();

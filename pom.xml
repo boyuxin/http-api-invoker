@@ -42,8 +42,18 @@
         <jacoco.version>0.7.5.201505241946</jacoco.version>
         <httpclient.version>4.5.9</httpclient.version>
         <httpmime.version>4.5.9</httpmime.version>
+        <hutool.version>5.5.1</hutool.version>
+
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.api2pdf.client</groupId>
             <artifactId>api2pdf</artifactId>

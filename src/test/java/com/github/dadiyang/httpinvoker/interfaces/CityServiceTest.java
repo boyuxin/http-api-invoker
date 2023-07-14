@@ -1,5 +1,6 @@
 package com.github.dadiyang.httpinvoker.interfaces;
 
+import cn.hutool.core.util.PhoneUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.listener.PageReadListener;
 import com.alibaba.fastjson.JSON;
@@ -89,6 +90,9 @@ public class CityServiceTest {
 
     @Test
     public void testtttt(){
+        String string = PhoneUtil.hideBetween("").toString();
+        System.out.println(string);
+
         HtmlToPdf htmlToPdf = HtmlToPdf.create();
         htmlToPdf.object(HtmlToPdfObject.forUrl("https://blog.csdn.net/weixin_49189242/article/details/124627556"));
         htmlToPdf.convert("C:\\Users\\Lance\\Desktop\\wor234234dfile.pdf");
@@ -139,7 +143,6 @@ public class CityServiceTest {
             bzsReqDTO.setDiagnoseId(diagnoseId);
             bzsReqDTO.setTraceId(UUID.randomUUID().toString());
             HashMap<String, String> headers = new HashMap<>();
-//            headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpmSlFhc292VzBXSVlKWUJ3RDY5cHAxdDhTVExLdnBXVzJNR3R2Vk5HcGdnczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
             headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpUd3BIc0FlY0dVS0xvUi9uVkVRcTdDTndYWnNpRlU4UnF5Z0oxZWtJZFRBczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
             Result<Boolean> result = cityService.bzsPush(bzsReqDTO,headers);
             System.out.println(result);
@@ -155,11 +158,14 @@ public class CityServiceTest {
     public void 更新线上数据() throws Exception {
         ArrayList<CleanDoctorData> docData = getDocData();
         Map<String, List<CleanDoctorData>> excelDate = docData.stream().filter(x -> (!StringUtils.isBlank(x.getDocId()))).collect(Collectors.groupingBy(CleanDoctorData::getDocId));
-        System.out.println(excelDate);
+//        System.out.println(excelDate);
         ArrayList<CleanDoctorData> remarkList = new ArrayList<>();
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
         excelDate.keySet().parallelStream().forEach( doctorId ->{
             try {
+                log.info("====================当前清洗医生{}================================",doctorId);
                 updateDoctorInfo(excelDate, doctorId);
+                System.out.println();
             }catch (Exception e){
                 List<CleanDoctorData> cleanDoctorData = excelDate.get(doctorId);
                 if (!CollectionUtils.isEmpty(cleanDoctorData)){
@@ -172,20 +178,15 @@ public class CityServiceTest {
             }
         }  );
         System.out.println(remarkList);
-//        for (String doctorId:excelDate.keySet()) {
-//            try {
-//                updateDoctorInfo(excelDate, doctorId);
-//            }catch (Exception e){
-//                List<CleanDoctorData> cleanDoctorData = excelDate.get(doctorId);
-//                if (CollectionUtils.isEmpty(cleanDoctorData)){
-//                    CleanDoctorData cleanDoctorRemark = cleanDoctorData.get(0);
-//                    if (cleanDoctorRemark != null) {
-//                        cleanDoctorRemark.setRemark(e.getMessage());
-//                        remarkList.add(cleanDoctorRemark);
-//                    }
-//                }
-//            }
-//        }
+        // 写法1
+        String fileNameresp = "/Users/apple/Desktop/更新线上数据" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(fileNameresp, CleanDoctorData.class).sheet("模板").doWrite(remarkList);
+        try {
+            Thread.sleep(99999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateDoctorInfo(Map<String, List<CleanDoctorData>> excelDate, String doctorId) throws Exception {
@@ -200,18 +201,12 @@ public class CityServiceTest {
             log.error("查询失败:{}----{}",queryMultiConsultSettingsReqDTO,listResult);
             throw new Exception("查询失败:" + doctorId);
         }
-        if (true){
-            throw new Exception("查询失败:" + doctorId);
-        }
-        if (true){
-            return;
-        }
-        System.err.println("=====================");
-        System.err.println("=====================");
-        System.err.println("=====================");
-        System.err.println("=====================");
-        System.err.println("=====================");
-        System.err.println("=====================");
+        System.err.println("==========******=========="+doctorId);
+//        if (true){
+//            throw new Exception("查询失败:" + doctorId);
+//
+//        }
+
         List<QueryConsultSettingsResDTO> result = listResult.getResult();
         //医生不可用
         Result<Boolean> delDocSetting = cityService.delDocSetting(queryMultiConsultSettingsReqDTO);
@@ -227,7 +222,7 @@ public class CityServiceTest {
             log.info("修改医生信息接口返回:{}",submitConsultSettings);
             if (submitConsultSettings== null || !submitConsultSettings.isSuccess() ||  !submitConsultSettings.getResult()) {
                 log.error("修改医生信息失败:{}----{}",queryMultiConsultSettingsReqDTO,listResult);
-                throw new Exception("修改医生信息失败:"+ doctorId);
+                throw new Exception("修改医生信息失败:"+JSON.toJSONString(submitConsultSettings)+ "===="+ doctorId);
             }
         }
     }
@@ -245,7 +240,7 @@ public class CityServiceTest {
 
 
 //        Set<String> docIds = new HashSet<>();
-        docIds.add("186982");
+//        docIds.add("243507");
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -378,7 +373,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "/Users/apple/Documents/肿瘤&风免需配置分佣医生明细--数据截止4月25日.xlsx";
+        String fileName = "/Users/apple/Desktop/肿瘤医生需配置邦指数分佣医生明细--数据截止7月6日.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -393,11 +388,44 @@ public class CityServiceTest {
     }
 
     private ArrayList<CleanDoctorData>  getDocData() {
-        String fileName = "/Users/apple/Desktop/0516.xlsx";
+//        String fileName = "/Users/apple/Desktop/byx.xlsx";
+        String fileName = "/Users/apple/Desktop/0608.xlsx";
         ArrayList<CleanDoctorData> cleanDoctorData = new ArrayList<>();
 
         EasyExcel.read(fileName, CleanDoctorData.class, new PageReadListener<CleanDoctorData>(dataList -> {
             for (CleanDoctorData demoData : dataList) {
+                try {
+                    cleanDoctorData.add(demoData);
+                } catch (Exception e) {
+                    System.out.println("数据解析异常");
+                }
+            }
+        })).sheet().doRead();
+        return cleanDoctorData;
+    }
+
+    @Test
+    public void 双医增加医生(){
+        ArrayList<HospitalDoctorDownInfoInputDTO> docDat = getDocDat();
+        for (HospitalDoctorDownInfoInputDTO hospitalDoctorDownInfoInputDTO:docDat) {
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("X-FOSUN-TOKEN", "bDRLTEtha0lUUkdLVHJFMXczU3FHNE9Qa29NN0VqS2ZoSGFha0g2MHhFbVNqQ2VrTnlYTzFLVmRhSUpCKzN6OEdsaTd1UGwxaGEyYXlWQjBYMXpRS1dxdC8xT0VMWC9hWWVrcWNxamRUNCszUnZob3N3M2JNVi9LK0Q0M3F0L3EvMitwTFFBWForWTFQTGRWSzNJWFpRRHN5aUltaDRteWtDSCtTVUVqT1R1TDNmOExKaHNrMWJqTXNSbGNET1VsczJ0WkxFMkpsYkJ3RWxjNDdEdVY0TFpNRU03TmVldGVGTERudlpHODFqWT0");
+
+            log.info("双医增加医生入参：{}",hospitalDoctorDownInfoInputDTO);
+            String save = cityService.save(hospitalDoctorDownInfoInputDTO,headers);
+            log.info("双医增加医生出参：{}",save);
+
+        }
+
+
+    }
+
+    private ArrayList<HospitalDoctorDownInfoInputDTO>  getDocDat() {
+        String fileName = "/Users/apple/Downloads/君兰医生详情页双医入口打开名单(生产环境)0602.xlsx";
+        ArrayList<HospitalDoctorDownInfoInputDTO> cleanDoctorData = new ArrayList<>();
+
+        EasyExcel.read(fileName, HospitalDoctorDownInfoInputDTO.class, new PageReadListener<HospitalDoctorDownInfoInputDTO>(dataList -> {
+            for (HospitalDoctorDownInfoInputDTO demoData : dataList) {
                 try {
                     cleanDoctorData.add(demoData);
                 } catch (Exception e) {
@@ -522,7 +550,7 @@ public class CityServiceTest {
         // 写法1：JDK8+ ,不用额外写一个DemoDataListener
         // since: 3.0.0-beta1
 //        String fileName = "C:\\Users\\Lance\\Desktop\\测试环境测试数据.xlsx";
-        String fileName = "C:\\Users\\Lance\\Desktop\\关单.xlsx";
+        String fileName = "/Users/apple/Desktop/gd.xlsx";
 //        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
@@ -539,12 +567,19 @@ public class CityServiceTest {
 
         AtomicInteger i = new AtomicInteger(1);
         docIds.parallelStream().forEach(d -> {
-            CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-            closeConsultOrder.setDiagnoseId(d);
-            System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
-            Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
-            System.out.println("关单返回"+JSON.toJSONString(result));
-            System.out.println("================================"+ i.getAndIncrement());
+            ModifyConsultOrderReqDTO modifyConsultOrderReqDTO = new ModifyConsultOrderReqDTO();
+            modifyConsultOrderReqDTO.setDiagnoseId(d);
+            modifyConsultOrderReqDTO.setOperator("批量关单");
+            modifyConsultOrderReqDTO.setConsultStatus("END_DIRECT_CONSULT");
+            modifyConsultOrderReqDTO.setReqSystem("JB-API");
+            modifyConsultOrderReqDTO.setTraceId(UUID.randomUUID().toString());
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("X-FOSUN-TOKEN", "SHI3bHhxREM5OW9pWlUwY243S2xONUtNSjZRM0pjN1VwVjFvZ2tIN2ZQejhhVHprR1hIbDl3MytubU1EcmxQUTZWMWJwdlNkN1NkOE5DR1ZsMi9TZWphT21Cd05BY0JIYVNpZmRwTHJMOXBUcFhNTXJqLzl4ZnNOZVdrZkl4SXNOT0ZTWmhraittSXBjTUZHbkNobi9yWklVZEtUdFladDI4dmpMUUxJMzRvUGdzdXdYV0hlL0RlRFl5N1ZES0tuTjR2UGtyb0kyc2VmWGJVZXRDdVJDNUI4TEhjTXJSUUhlSDZwL3RGemN1dz0");
+
+            System.out.println("关单参数"+JSON.toJSONString(modifyConsultOrderReqDTO));
+            String consultOrderResDTOResult = cityService.modifyConsultOrder(modifyConsultOrderReqDTO,headers);
+            System.out.println("关单返回"+JSON.toJSONString(consultOrderResDTOResult));
+            System.err.println("==================="+ i.getAndIncrement()+"===================");
         });
 //        for (String d: docIds) {
 //            CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
@@ -569,7 +604,7 @@ public class CityServiceTest {
     @Test
     public void close(){
         CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-        closeConsultOrder.setDiagnoseId("202212191444516730");
+        closeConsultOrder.setDiagnoseId("202306011008184868");
         System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
         Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
         System.out.println("关单返回"+JSON.toJSONString(result));

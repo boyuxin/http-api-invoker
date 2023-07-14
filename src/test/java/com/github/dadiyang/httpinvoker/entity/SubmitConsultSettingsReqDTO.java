@@ -73,4 +73,9 @@ public class SubmitConsultSettingsReqDTO extends BaseReqDTO {
      */
     private String serviceDuration;
 
+    /**
+     * 商户id
+     */
+    private Integer supplierId;
+
 }
