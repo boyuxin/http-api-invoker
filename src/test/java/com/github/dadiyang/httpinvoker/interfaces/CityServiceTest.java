@@ -236,11 +236,284 @@ public class CityServiceTest {
     @Test
     public void clearDoctor(){
 
-        Set<String> docIds = getDocIds();
+//        Set<String> docIds = getDocIds();
 
 
-//        Set<String> docIds = new HashSet<>();
-//        docIds.add("243507");
+        Set<String> docIds = new HashSet<>();
+        docIds.add("332798");
+        docIds.add("319594");
+        docIds.add("318749");
+        docIds.add("320082");
+        docIds.add("322510");
+        docIds.add("318926");
+        docIds.add("318629");
+        docIds.add("319233");
+        docIds.add("319528");
+        docIds.add("320502");
+        docIds.add("319840");
+        docIds.add("319287");
+        docIds.add("319315");
+        docIds.add("318680");
+        docIds.add("320483");
+        docIds.add("320641");
+        docIds.add("320050");
+        docIds.add("318590");
+        docIds.add("319050");
+        docIds.add("320406");
+        docIds.add("319025");
+        docIds.add("319405");
+        docIds.add("318772");
+        docIds.add("320545");
+        docIds.add("319160");
+        docIds.add("319157");
+        docIds.add("319574");
+        docIds.add("318717");
+        docIds.add("318566");
+        docIds.add("319016");
+        docIds.add("319392");
+        docIds.add("318986");
+        docIds.add("319752");
+        docIds.add("319986");
+        docIds.add("321367");
+        docIds.add("318539");
+        docIds.add("319014");
+        docIds.add("318777");
+        docIds.add("319636");
+        docIds.add("318556");
+        docIds.add("319709");
+        docIds.add("318550");
+        docIds.add("318548");
+        docIds.add("319110");
+        docIds.add("319416");
+        docIds.add("321301");
+        docIds.add("319295");
+        docIds.add("320352");
+        docIds.add("320474");
+        docIds.add("319047");
+        docIds.add("318730");
+        docIds.add("319581");
+        docIds.add("320536");
+        docIds.add("319711");
+        docIds.add("318541");
+        docIds.add("319641");
+        docIds.add("319623");
+        docIds.add("320063");
+        docIds.add("319005");
+        docIds.add("320037");
+        docIds.add("318679");
+        docIds.add("319022");
+        docIds.add("319724");
+        docIds.add("132921");
+        docIds.add("319597");
+        docIds.add("318776");
+        docIds.add("318721");
+        docIds.add("320424");
+        docIds.add("320476");
+        docIds.add("318589");
+        docIds.add("321286");
+        docIds.add("320345");
+        docIds.add("320035");
+        docIds.add("321986");
+        docIds.add("318775");
+        docIds.add("318554");
+        docIds.add("318811");
+        docIds.add("319652");
+        docIds.add("319849");
+        docIds.add("320531");
+        docIds.add("319761");
+        docIds.add("319816");
+        docIds.add("318990");
+        docIds.add("320496");
+        docIds.add("321220");
+        docIds.add("318628");
+        docIds.add("322045");
+        docIds.add("319526");
+        docIds.add("318692");
+        docIds.add("318501");
+        docIds.add("319412");
+        docIds.add("319049");
+        docIds.add("319883");
+        docIds.add("319046");
+        docIds.add("320080");
+        docIds.add("321505");
+        docIds.add("319722");
+        docIds.add("318677");
+        docIds.add("322859");
+        docIds.add("319619");
+        docIds.add("319593");
+        docIds.add("319316");
+        docIds.add("319326");
+        docIds.add("319417");
+        docIds.add("319607");
+        docIds.add("319219");
+        docIds.add("318547");
+        docIds.add("320064");
+        docIds.add("318557");
+        docIds.add("318715");
+        docIds.add("319639");
+        docIds.add("318555");
+        docIds.add("320083");
+        docIds.add("319804");
+        docIds.add("319640");
+        docIds.add("332474");
+        docIds.add("318552");
+        docIds.add("320415");
+        docIds.add("321283");
+        docIds.add("318705");
+        docIds.add("318506");
+        docIds.add("319775");
+        docIds.add("318591");
+        docIds.add("321393");
+        docIds.add("319414");
+        docIds.add("318564");
+        docIds.add("318531");
+        docIds.add("319602");
+        docIds.add("320505");
+        docIds.add("319106");
+        docIds.add("319864");
+        docIds.add("318759");
+        docIds.add("319554");
+        docIds.add("321507");
+        docIds.add("319114");
+        docIds.add("319271");
+        docIds.add("319240");
+        docIds.add("332956");
+        docIds.add("320637");
+        docIds.add("319057");
+        docIds.add("319026");
+        docIds.add("318687");
+        docIds.add("318505");
+        docIds.add("318801");
+        docIds.add("319032");
+        docIds.add("319420");
+        docIds.add("319044");
+        docIds.add("319051");
+        docIds.add("321073");
+        docIds.add("319721");
+        docIds.add("321387");
+        docIds.add("321200");
+        docIds.add("319305");
+        docIds.add("319800");
+        docIds.add("186982");
+        docIds.add("318637");
+        docIds.add("318639");
+        docIds.add("319531");
+        docIds.add("319033");
+        docIds.add("321229");
+        docIds.add("318798");
+        docIds.add("320048");
+        docIds.add("319105");
+        docIds.add("319596");
+        docIds.add("318549");
+        docIds.add("319966");
+        docIds.add("319283");
+        docIds.add("321230");
+        docIds.add("319726");
+        docIds.add("318540");
+        docIds.add("332973");
+        docIds.add("319725");
+        docIds.add("320510");
+        docIds.add("332479");
+        docIds.add("322103");
+        docIds.add("319887");
+        docIds.add("320335");
+        docIds.add("318632");
+        docIds.add("319946");
+        docIds.add("319720");
+        docIds.add("318988");
+        docIds.add("320561");
+        docIds.add("321300");
+        docIds.add("318533");
+        docIds.add("318725");
+        docIds.add("318581");
+        docIds.add("318748");
+        docIds.add("321303");
+        docIds.add("318805");
+        docIds.add("319615");
+        docIds.add("320428");
+        docIds.add("321257");
+        docIds.add("319329");
+        docIds.add("318737");
+        docIds.add("319981");
+        docIds.add("321226");
+        docIds.add("318675");
+        docIds.add("319278");
+        docIds.add("320342");
+        docIds.add("318897");
+        docIds.add("319917");
+        docIds.add("318991");
+        docIds.add("318813");
+        docIds.add("319759");
+        docIds.add("319419");
+        docIds.add("319349");
+        docIds.add("319866");
+        docIds.add("321474");
+        docIds.add("319048");
+        docIds.add("322052");
+        docIds.add("319844");
+        docIds.add("318582");
+        docIds.add("320544");
+        docIds.add("319871");
+        docIds.add("322258");
+        docIds.add("320073");
+        docIds.add("319983");
+        docIds.add("318635");
+        docIds.add("318784");
+        docIds.add("318699");
+        docIds.add("318718");
+        docIds.add("320421");
+        docIds.add("321542");
+        docIds.add("320677");
+        docIds.add("318559");
+        docIds.add("318757");
+        docIds.add("319163");
+        docIds.add("320081");
+        docIds.add("319606");
+        docIds.add("318992");
+        docIds.add("319723");
+        docIds.add("318890");
+        docIds.add("319713");
+        docIds.add("320322");
+        docIds.add("321484");
+        docIds.add("320099");
+        docIds.add("319052");
+        docIds.add("319848");
+        docIds.add("320646");
+        docIds.add("322111");
+        docIds.add("319330");
+        docIds.add("319833");
+        docIds.add("319993");
+        docIds.add("319916");
+        docIds.add("326282");
+        docIds.add("319153");
+        docIds.add("318636");
+        docIds.add("321509");
+        docIds.add("318770");
+        docIds.add("319603");
+        docIds.add("328455");
+        docIds.add("319764");
+        docIds.add("320079");
+        docIds.add("319861");
+        docIds.add("319418");
+        docIds.add("318640");
+        docIds.add("318804");
+        docIds.add("319156");
+        docIds.add("321211");
+        docIds.add("318701");
+        docIds.add("319340");
+        docIds.add("319649");
+        docIds.add("319054");
+        docIds.add("321265");
+        docIds.add("319694");
+        docIds.add("321395");
+        docIds.add("320347");
+        docIds.add("319575");
+        docIds.add("320537");
+        docIds.add("318774");
+        docIds.add("319897");
+        docIds.add("319580");
+        docIds.add("319415");
+        docIds.add("318562");
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -324,27 +597,19 @@ public class CityServiceTest {
         strings.add("ELECTRONIC_PRESCRIPTION");
 
         ArrayList<String> doctorids = new ArrayList<>();
-        doctorids.add("151061");
-        doctorids.add("145291");
-        doctorids.add("87754");
-        doctorids.add("58378");
-        doctorids.add("57384");
-        doctorids.add("55383");
-        doctorids.add("59962");
-        doctorids.add("243694");
-        doctorids.add("101671");
-        doctorids.add("146621");
-        doctorids.add("115137");
-        doctorids.add("180036");
-        doctorids.add("181158");
-        doctorids.add("106906");
-        doctorids.add("98800");
-        doctorids.add("64796");
-        doctorids.add("87487");
-        doctorids.add("62457");
-        doctorids.add("14090");
-        doctorids.add("171628");
-        doctorids.add("237583");
+        doctorids.add("6799");
+        doctorids.add("211934");
+//        doctorids.add("55902");
+//        doctorids.add("212100");
+//        doctorids.add("212086");
+//        doctorids.add("241947");
+//        doctorids.add("260995");
+//        doctorids.add("101456");
+//        doctorids.add("219004");
+//        doctorids.add("212169");
+//        doctorids.add("8295");
+//        doctorids.add("211989");
+
         for (String dd :doctorids) {
             for (String sss:strings) {
                 SubmitConsultSettingsReqDTO reqDTO = new SubmitConsultSettingsReqDTO();
@@ -373,7 +638,7 @@ public class CityServiceTest {
 
 
     private Set<String> getDocIds() {
-        String fileName = "/Users/apple/Desktop/肿瘤医生需配置邦指数分佣医生明细--数据截止7月6日.xlsx";
+        String fileName = "/Users/apple/Desktop/医生ID清单.xlsx";
         Set<String> docIds = new HashSet<String>();
         EasyExcel.read(fileName, CleanDoctorDemoData.class, new PageReadListener<CleanDoctorDemoData>(dataList -> {
             for (CleanDoctorDemoData demoData : dataList) {
@@ -555,16 +820,16 @@ public class CityServiceTest {
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取100条数据 然后返回过来 直接调用使用数据就行
         ArrayList<String> docIds = new ArrayList<String>();
-        EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
-            for (DemoData demoData : dataList) {
-                try {
-                    docIds.add(demoData.getDiagnoseId());
-                } catch (Exception e) {
-                    System.out.println("数据解析异常");
-                }
-            }
-        })).sheet().doRead();
-
+//        EasyExcel.read(fileName, DemoData.class, new PageReadListener<DemoData>(dataList -> {
+//            for (DemoData demoData : dataList) {
+//                try {
+//                    docIds.add(demoData.getDiagnoseId());
+//                } catch (Exception e) {
+//                    System.out.println("数据解析异常");
+//                }
+//            }
+//        })).sheet().doRead();
+        docIds.add("202309050844291385");
         AtomicInteger i = new AtomicInteger(1);
         docIds.parallelStream().forEach(d -> {
             ModifyConsultOrderReqDTO modifyConsultOrderReqDTO = new ModifyConsultOrderReqDTO();
@@ -574,7 +839,7 @@ public class CityServiceTest {
             modifyConsultOrderReqDTO.setReqSystem("JB-API");
             modifyConsultOrderReqDTO.setTraceId(UUID.randomUUID().toString());
             HashMap<String, String> headers = new HashMap<>();
-            headers.put("X-FOSUN-TOKEN", "SHI3bHhxREM5OW9pWlUwY243S2xONUtNSjZRM0pjN1VwVjFvZ2tIN2ZQejhhVHprR1hIbDl3MytubU1EcmxQUTZWMWJwdlNkN1NkOE5DR1ZsMi9TZWphT21Cd05BY0JIYVNpZmRwTHJMOXBUcFhNTXJqLzl4ZnNOZVdrZkl4SXNOT0ZTWmhraittSXBjTUZHbkNobi9yWklVZEtUdFladDI4dmpMUUxJMzRvUGdzdXdYV0hlL0RlRFl5N1ZES0tuTjR2UGtyb0kyc2VmWGJVZXRDdVJDNUI4TEhjTXJSUUhlSDZwL3RGemN1dz0");
+            headers.put("X-FOSUN-TOKEN", "SHI3bHhxREM5OW9pWlUwY243S2xONUtNSjZRM0pjN1VwVjFvZ2tIN2ZQejhhVHprR1hIbDl3MytubU1EcmxQUTZWMWJwdlNkN1NkOE5DR1ZsMi9TZWphT21Cd05BY0JIYVNpZmRwTHJMOXBUcFhNTXJqLzl4ZnNOZVdrZkl4SXMyQlRPeVkxMEtmUUEwNk9MZWt5eTdVdHBRaWI2MG1RRXgrZFhwS05YbVJFUGdzdXdYV0hlL0RlRFl5N1ZES0tuTjR2UGtyb0kyc2VmWGJVZXRDdVJDNUI4TEhjTXJSUUhlSDZwL3RGemN1dz0");
 
             System.out.println("关单参数"+JSON.toJSONString(modifyConsultOrderReqDTO));
             String consultOrderResDTOResult = cityService.modifyConsultOrder(modifyConsultOrderReqDTO,headers);
@@ -604,7 +869,7 @@ public class CityServiceTest {
     @Test
     public void close(){
         CloseConsultOrder closeConsultOrder = new CloseConsultOrder();
-        closeConsultOrder.setDiagnoseId("202306011008184868");
+        closeConsultOrder.setDiagnoseId("202309050844291385");
         System.out.println("关单参数"+JSON.toJSONString(closeConsultOrder));
         Result<Boolean> result = cityService.closeConsultOrder(closeConsultOrder);
         System.out.println("关单返回"+JSON.toJSONString(result));

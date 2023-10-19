@@ -32,7 +32,7 @@ public class ConsultSettingsConvert {
         reqDTO.setChargebackTime(resDTO.getChargebackTime());
         reqDTO.setReqSystem("API-清洗医生数据");
         reqDTO.setTraceId(traceId);
-        reqDTO.setCleanFlag("CLEAN");
+//        reqDTO.setCleanFlag("CLEAN");
         reqDTO.setChargebackTime(StringUtils.isEmpty(resDTO.getChargebackTime()) ? "48" : resDTO.getChargebackTime());
         reqDTO.setAutomaticReplyScript(resDTO.getAutomaticReplyScript());
         reqDTO.setServiceDuration(resDTO.getServiceDuration());
