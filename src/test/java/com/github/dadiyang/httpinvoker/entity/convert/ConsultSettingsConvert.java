@@ -37,6 +37,7 @@ public class ConsultSettingsConvert {
         reqDTO.setAutomaticReplyScript(resDTO.getAutomaticReplyScript());
         reqDTO.setServiceDuration(resDTO.getServiceDuration());
         reqDTO.setSupplierId(1296267);
+//        reqDTO.setSupplierId(1299059);
 
         if ( cleanDoctorData == null || CollectionUtils.isEmpty(cleanDoctorData)){
             ArrayList<AssetsPackagePropertiesReqDTO> assetsPackagePropertiesReqDTOS = new ArrayList<>();
@@ -44,17 +45,22 @@ public class ConsultSettingsConvert {
             AssetsPackagePropertiesReqDTO assetsPackagePropertiesReqDTO = new AssetsPackagePropertiesReqDTO();
             assetsPackagePropertiesReqDTO.setAssetsPackageType("IMAGE_TEXT");
             assetsPackagePropertiesReqDTO.setAssetsPackageCode("620221005515");
+            //健保
+//            assetsPackagePropertiesReqDTO.setAssetsPackageCode("620231009449");
             assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO);
             //视频问诊
             AssetsPackagePropertiesReqDTO assetsPackagePropertiesReqDTO2 = new AssetsPackagePropertiesReqDTO();
             assetsPackagePropertiesReqDTO2.setAssetsPackageType("VIDEO");
             assetsPackagePropertiesReqDTO2.setAssetsPackageCode("620221005514");
+            //健保
+//            assetsPackagePropertiesReqDTO2.setAssetsPackageCode("620231009449");
             assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO2);
 
             //TODO 电话问诊
             AssetsPackagePropertiesReqDTO assetsPackagePropertiesReqDTO3 = new AssetsPackagePropertiesReqDTO();
             assetsPackagePropertiesReqDTO3.setAssetsPackageType("TELEPHONE");
             assetsPackagePropertiesReqDTO3.setAssetsPackageCode("620231006593");
+//            assetsPackagePropertiesReqDTO3.setAssetsPackageCode("620231009449");
             assetsPackagePropertiesReqDTOS.add(assetsPackagePropertiesReqDTO3);
             reqDTO.setAssetsPackagePropertiesClean(assetsPackagePropertiesReqDTOS);
         }else {

@@ -98,6 +98,34 @@ public class CityServiceTest {
         htmlToPdf.convert("C:\\Users\\Lance\\Desktop\\wor234234dfile.pdf");
     }
 
+    @Test
+    public void SCList(){
+        ArrayList<CleanSCDemoData> scList = getScList();
+        String s = "INSERT INTO `t_consult_settings` ( `consult_settings_no`, `doctor_id`, `master_code`, `consult_mode`, `settings_switch`, `service_price`, `sku_id`, `assets_order_id`, `product_code`, `chargeback_time`,  `automatic_reply_script`, `service_duration`, `store_no`) VALUES ( '%s', '%s', 'FOSUN_HEALTH', 'HEALTH_INSURANCE_VIDEO', 'ON', %s, '%s', NULL, '%s', '48',  NULL, '48', '%s');";
+        String s1 = "20290522163838";
+        int i = 1000;
+        for (CleanSCDemoData data : scList) {
+            String[] split = data.getDoctorIds().split(",");
+            for (String doc: split){
+                System.out.println(doc);
+
+//                String s2 = s1 + i;
+//                i++;
+//                String s3 = data.getPrice() + "00";
+//                String sql = String.format(s
+//                        , s2
+//                        , doc
+//                        , s3
+//                        ,data.getSkuId()
+//                        , data.getProductCode()
+//                        , data.getStoreNo()
+//
+//                );
+//                System.out.println(sql);
+            }
+        }
+    }
+
 
     @Test
     public void 退钱(){
@@ -227,6 +255,12 @@ public class CityServiceTest {
         }
     }
 
+    @Test
+    public void 循环(){
+        for (int i = 0; i < 13; i++) {
+            clearDoctor();
+        }
+    }
     /**
      *功能描述 : 清洗医生数据 70%
      * @author boyuxin
@@ -240,14 +274,16 @@ public class CityServiceTest {
 
 
         Set<String> docIds = new HashSet<>();
-        docIds.add("34979");
-        docIds.add("13332");
-        docIds.add("12136");
-        docIds.add("57504");
-        docIds.add("260");
-        docIds.add("35");
-        docIds.add("10596");
-        docIds.add("22371");
+        docIds.add("336469");
+        docIds.add("336417");
+        docIds.add("336267");
+        docIds.add("336253");
+        docIds.add("336189");
+        docIds.add("336187");
+        docIds.add("336178");
+        docIds.add("336141");
+        docIds.add("336113");
+
         //查询医生数据
         int i = 0;
         for (String docId:docIds) {
@@ -280,6 +316,36 @@ public class CityServiceTest {
                 log.info("修改医生信息接口返回:{}",submitConsultSettings);
             }
         }
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("");
+    }
+
+    @Test
+    public void 修改医生咨询设置 (){
+
+        SubmitConsultSettingsReqDTO reqDTO = new SubmitConsultSettingsReqDTO();
+        reqDTO.setDoctorId("243507");
+        reqDTO.setSkuId("30361564");
+        reqDTO.setProductCode("620231009443");
+        reqDTO.setStoreNo("1299059");
+        reqDTO.setServicePrice(15000L);
+
+
+        reqDTO.setConsultMode("HEALTH_INSURANCE_VIDEO");
+        reqDTO.setSettingsSwitch("ON");
+        reqDTO.setId("225121");
+        reqDTO.setUsableFlag("USABLE");
+        reqDTO.setReqSystem("API");
+        reqDTO.setTraceId(UUID.randomUUID().toString());
+
+
+        log.info("修改医生信息接口:{}",JSON.toJSONString(reqDTO));
+        Result<Boolean> submitConsultSettings = cityService.modifyConsultSettings(reqDTO);
+        log.info("修改医生信息接口返回:{}",submitConsultSettings);
         try {
             Thread.sleep(999999);
         } catch (InterruptedException e) {
@@ -322,6 +388,7 @@ public class CityServiceTest {
 
     }
 
+
     @Test
     public void 关闭咨询(){
         ArrayList<String> strings = new ArrayList<>();
@@ -331,15 +398,7 @@ public class CityServiceTest {
         strings.add("ELECTRONIC_PRESCRIPTION");
 
         ArrayList<String> doctorids = new ArrayList<>();
-        doctorids.add("248515");
-        doctorids.add("272052");
-        doctorids.add("241884");
-        doctorids.add("272103");
-        doctorids.add("272046");
-        doctorids.add("272064");
-        doctorids.add("245342");
-        doctorids.add("10844");
-        doctorids.add("280442");
+        doctorids.add("28002");
 
         for (String dd :doctorids) {
             for (String sss:strings) {
@@ -381,6 +440,20 @@ public class CityServiceTest {
             }
         })).sheet().doRead();
         return docIds;
+    }
+
+    private ArrayList<CleanSCDemoData>  getScList() {
+        String fileName = "/Users/apple/Desktop/健保权益产品码映射信息1.xlsx";
+        ArrayList<CleanSCDemoData> cleanSCDemoData = new ArrayList<>();
+
+        EasyExcel.read(fileName, CleanSCDemoData.class, new PageReadListener<CleanSCDemoData>(dataList -> {
+            for (CleanSCDemoData demoData : dataList) {
+                cleanSCDemoData.add(demoData);
+            }
+        })).sheet().doRead();
+
+
+        return cleanSCDemoData;
     }
 
     private ArrayList<CleanDoctorData>  getDocData() {
@@ -509,13 +582,28 @@ public class CityServiceTest {
 
 
     public static void main(String[] args) {
-        Double twPrice = 0.0;
-        BigDecimal bai = new BigDecimal(100);
-        BigDecimal bigDecimal = BigDecimal.valueOf(twPrice);
-        BigDecimal multiply = bigDecimal.multiply(bai);
-        long l = multiply.longValue();
-        long l1 = twPrice.longValue() * 100;
-        System.out.println();
+        DataT[][] dataTS = new DataT[7][15];
+        Random random = new Random();
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 15; j++) {
+                dataTS[i][j] = new DataT(String.valueOf(random.nextInt(1000)), "Name" + (i * 15 + j));
+            }
+        }
+//        System.out.println(JSON.toJSONString(dataTS));
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        // 打印二维数组
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 15; j++) {
+                System.out.print(JSON.toJSONString(dataTS[i][j] ) + " | ");
+
+//                System.out.print(dataTS[i][j] + " | ");
+            }
+            System.out.println();
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+
     }
 
     @Test

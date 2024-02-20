@@ -76,6 +76,9 @@ public interface CityService {
     @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/submitConsultSettings" , method = ReqMethod.POST)
     Result<Boolean> submitConsultSettings(SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO);
 
+    @HttpReq(value = "https://mapi.fosun-creative.com/api/consult-core/consultSettings/modifyConsultSettings" , method = ReqMethod.POST)
+    Result<Boolean> modifyConsultSettings(SubmitConsultSettingsReqDTO submitConsultSettingsReqDTO);
+
     @HttpReq(value = "https://mapi.fosun-creative.com/api/im-core/user/register" , method = ReqMethod.POST)
     Result<UserRegisterResDTO> register(UserRegisterReqDTO userRegisterReqDTO);
 

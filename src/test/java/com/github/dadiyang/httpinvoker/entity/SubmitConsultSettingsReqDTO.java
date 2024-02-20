@@ -78,4 +78,35 @@ public class SubmitConsultSettingsReqDTO extends BaseReqDTO {
      */
     private Integer supplierId;
 
+    /**
+     * 数据库id
+     */
+    private String id;
+
+    /**
+     * 删除标识
+     */
+    private String usableFlag;
+
+    /**
+     * 商品Id
+     */
+    private String skuId;
+
+    /**
+     * 权益id
+     */
+    private String assetsOrderId;
+
+    /**
+     * 产品编号
+     */
+    private String productCode;
+
+    /**
+     * 店铺id
+     */
+    private String storeNo;
+
+
 }
